@@ -1,0 +1,86 @@
+---
+title: 'Public Health Ethics: Types, Principles and Advantages'
+authors: 
+  - Ahmed Azeez
+date: '2026-05-08'
+slug: public-health-ethics
+categories:
+  - post
+tags:
+  - Public Health
+  - Ethics
+description: 'Exploring the types, principles, and importance of ethical practice in public health.'
+thumbnail: ''
+---
+
+## What is Ethics?
+
+Ethics are the set of rules that govern our expectations of our own and others’ behavior. The term ‘ethics’ is derived from the Greek word ‘ethos’ that can mean custom, tradition, personality or disposition.
+
+Ethics is a system of moral principles. They affect how people make choices and lead their existence. Ethics is concerned with what is virtuous for persons and society and is defined as moral philosophy. It serves as the guideline for responsibly conducting tasks.
+
+Ethics covers the following dimensions:
+* Our moralities and accountabilities.
+* The language of right and wrong.
+* Ethical decisions – what is good and bad?
+* How to live a good life?
+
+## What is Public Health Ethics?
+
+Public health ethics pursues to comprehend and simplify principles and values, which guide public health actions. Principles and values offer an agenda for decision making and a means of justifying decisions.
+
+Public health actions are often commenced by governments and are focused at the population level. The principles and values which guide public health can vary from those which guide actions in natural science and clinical medicine, which are more patient or individual-centered.
+
+However, public health ethics include all the actions and activities carried out directly or indirectly by the public health related organizations as well. On the basis of nature of work, public health ethics can be broadly divided into:
+1. Ethical principles of research
+2. Ethical principles during other public health programs
+
+## Principles of Ethical Practice in Public Health
+
+1. **Causes of disease to prevent adverse health outcomes**: Public health should address principally the fundamental causes of ill health and requirements for health, aiming to prevent adverse health outcomes.
+2. **Rights of individuals**: Public health should achieve community health in a way that respects the rights of individuals in the community.
+3. **Community inputs to policy and programs**: Public health policies, programs and priorities should be developed and evaluated through processes that ensure an opportunity for input from community members.
+4. **Seek information to implement policies, program**: Public health should seek the information needed to implement effective policies and programs that protect and promote health.
+5. **Empowerment of marginalized community**: Public health should advocate and work for the empowerment of marginalized and socially excluded community members, aiming to ensure that the basic resources and conditions necessary for health are accessible to all.
+6. **Public health institutions and community consent**: Public health institutions should provide communities with the information they have that is needed for decisions on policies and programs. Programs should also obtain the community’s consent for their implementation.
+7. **Public mandate**: Public health institutions should act in a timely manner on the information they have within the resources and the mandate given to them.
+8. **Program implementation and environment**: Public health programs and policies should be implemented in a manner that enhances the physical and social environment.
+9. **Values, belief and culture**: Public health programs and policies should incorporate a variety of approaches that anticipate and respect diverse values, beliefs, and cultures in the community.
+10. **Protection of information confidentiality**: Public health institutions and professionals should protect the confidentiality of information that can bring harm to an individual or community if made public.
+11. **Professional competency**: Public health institutions should ensure the professional competency of their employees.
+12. **Public trust**: Public health institutions and their employees should engage in collaborations, networking and affiliations in ways that build the public trust and the institutions' effectiveness.
+
+## Types of Ethics for Public Health Professionals
+
+*   **Professional ethics** (Ethics of public health): Relates to the mission of public health to protect and promote health, focusing on the professional character of practitioners.
+*   **Applied ethics** (Ethics in public health): Situation-specific ethics that seeks to detect morally applicable decisions in tangible cases.
+*   **Advocacy ethics** (Ethics for public health): Taking a standpoint for goals and improvements most likely to accomplish the moral aims of public health.
+*   **Critical public health ethics**: Sheds light on matters that may be hidden from outlook by customary ways of thinking or acting, considering social values and tendencies.
+
+## Steps in the Process of Ethical Decision Making
+
+1. Recognition/identification of the issue
+2. Data collection/gathering
+3. Framing the issues
+4. Evaluation of morally relevant conditions and considerations
+5. Implementation of decision
+6. Evaluation of decision-making process
+
+## Importance of Ethics for Public Health Professionals
+
+* To ensure dignity, rights and welfare of the people.
+* To foster development in health research, scientific advances, and new treatments.
+* To balance respect for individual freedom and liberty.
+* To make governments responsible for protecting citizens' health.
+* To build trust between professionals and the public.
+* To promote social and moral values.
+* To ensure individual sovereignty and global relevance of health issues.
+
+Ethical standards uphold values vital to cooperative work, such as belief, answerability, mutual respect, and impartiality.
+
+## References and Further Information
+
+* [CDC Public Health Ethics](https://www.cdc.gov/od/science/integrity/phethics/index.htm)
+* [WHO Bulletin on Public Health Ethics](https://www.who.int/bulletin/volumes/86/8/08-052431/en/)
+* [The Importance of Public-Health Ethics](https://www.researchgate.net/publication/23263955_The_importance_of_public-health_ethics)
+* [The Hastings Center - Public Health Briefing](https://www.thehastingscenter.org/briefingbook/public-health/)
