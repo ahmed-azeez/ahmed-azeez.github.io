@@ -1,0 +1,66 @@
+{{ partial "header.html" . }}
+
+<main class="certs-page">
+  <div class='post-background'>
+    <div class='post-gradient'></div>
+    {{ partial "simple-nav.html" . }}
+  </div>
+
+  <article class="article">
+
+    <section class="post__info">
+      <h1 class="post__title">{{ .Title }}</h1>
+    </section>
+
+    <section class="post__content">
+      {{ .Content }}
+    </section>
+
+    <section class="certs-section">
+
+      <div class="certs-header">
+        <button id="certs-admin-toggle" class="certs-admin-toggle" aria-label="Admin login">Admin</button>
+      </div>
+
+      <div id="certs-admin-panel" class="certs-admin-panel" hidden>
+
+        <form id="certs-login-form" class="certs-login-form">
+          <h4>Admin Login</h4>
+          <input type="email" id="certs-email" placeholder="Email" required autocomplete="username">
+          <input type="password" id="certs-password" placeholder="Password" required autocomplete="current-password">
+          <button type="submit" class="certs-btn">Log In</button>
+          <p id="certs-login-error" class="certs-error" hidden></p>
+        </form>
+
+        <button id="certs-logout-btn" class="certs-btn certs-btn--secondary" hidden>Log Out</button>
+
+        <div id="certs-upload-section" class="certs-upload-section" hidden>
+          <h4>Add a Certificate</h4>
+          <form id="certs-upload-form" class="certs-upload-form">
+            <input type="text" id="cert-title" placeholder="Title (e.g. Advanced Epidemiology)" required>
+            <input type="text" id="cert-issuer" placeholder="Issuer (e.g. WHO)">
+            <input type="date" id="cert-date" placeholder="Date issued">
+            <textarea id="cert-description" placeholder="Short description (optional)" rows="2"></textarea>
+            <input type="file" id="cert-file" accept="image/*,application/pdf" required>
+            <button type="submit" class="certs-btn">Upload</button>
+            <p id="certs-upload-status" class="certs-status" hidden></p>
+          </form>
+        </div>
+
+      </div>
+
+      <div id="certs-gallery" class="certs-gallery"></div>
+      <p id="certs-empty" class="certs-empty" hidden>No certificates uploaded yet.</p>
+
+    </section>
+
+  </article>
+
+</main>
+<footer class='footer__single'>
+  {{ partial "footer.html" . }}
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="{{ "js/supabase-config.js" | relURL }}"></script>
+<script src="{{ "js/certs.js" | relURL }}"></script>
