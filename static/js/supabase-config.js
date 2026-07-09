@@ -1,16 +1,6 @@
 // ===================================================================
 // Supabase configuration for the Certificates page.
-//
-// 1. Go to your Supabase project -> Project Settings -> API
-// 2. Copy the "Project URL" and the "anon public" key (NOT the
-//    service_role key — that one must never appear in this file
-//    or anywhere in your public site).
-// 3. Paste them below.
-//
-// The anon key is *meant* to be public — it's safe to publish on
-// GitHub Pages. Security is enforced by Row Level Security (RLS)
-// policies on the Supabase side, not by hiding this key.
 // ===================================================================
 
-const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+const SUPABASE_URL = "https://zutmfcstrrryawrhqovy.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1dG1mY3N0cnJyeWF3cmhxb3Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MDMyMTgsImV4cCI6MjA5OTE3OTIxOH0.p4dZ17GIK4CCmdYGKuc2gm0SZa6HnXycJqDDtST1_HU";
