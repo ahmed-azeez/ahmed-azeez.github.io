@@ -9,6 +9,9 @@ const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const BUCKET = "certificates";
 const TABLE = "certificates";
 
+// Configure PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 const galleryEl = document.getElementById("certs-gallery");
 const emptyEl = document.getElementById("certs-empty");
 const adminToggleBtn = document.getElementById("certs-admin-toggle");
@@ -23,6 +26,28 @@ const logoutBtn = document.getElementById("certs-logout-btn");
 let isAdmin = false;
 
 // ---------- Gallery rendering ----------
+
+async function generatePdfPreview(url, canvas) {
+  try {
+    const loadingTask = pdfjsLib.getDocument(url);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+    
+    const viewport = page.getViewport({ scale: 1.5 });
+    const context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    await page.render(renderContext).promise;
+  } catch (error) {
+    console.error('Error generating PDF preview:', error);
+    // If preview fails, we could show a placeholder or just leave it blank
+  }
+}
 
 function renderGallery(certs) {
   galleryEl.innerHTML = "";
@@ -45,31 +70,56 @@ function renderGallery(certs) {
       : "";
 
     const isPdf = cert.image_url.toLowerCase().endsWith('.pdf');
-    const previewHtml = isPdf 
-      ? `<div class="cert-card__pdf-overlay">View PDF</div><div style="height:100%; display:flex; align-items:center; justify-content:center; background:var(--elevation);"><svg style="width:50px; height:50px; fill:var(--accent);" viewBox="0 0 24 24"><path d="M20,2L4,2C2.9,2,2,2.9,2,4L2,20C2,21.1,2.9,22,4,22L20,22C21.1,22,22,21.1,22,20L22,4C22,2.9,21.1,2,20,2ZM20,20L4,20L4,4L20,4L20,20ZM12,6L7,11L8.4,12.4L11,9.8L11,18L13,18L13,9.8L15.6,12.4L17,11L12,6Z"/></svg></div>`
-      : `<img class="cert-card__image" src="${cert.image_url}" alt="${escapeHTML(cert.title)}" loading="lazy">`;
+    
+    const cardLink = document.createElement("a");
+    cardLink.className = "cert-card__image-link";
+    cardLink.href = cert.image_url;
+    cardLink.target = "_blank";
+    cardLink.rel = "noopener";
 
-    card.innerHTML = `
-      <a class="cert-card__image-link" href="${cert.image_url}" target="_blank" rel="noopener">
-        ${previewHtml}
-      </a>
-      <div class="cert-card__body">
-        <h4 class="cert-card__title">${escapeHTML(cert.title)}</h4>
-        ${cert.issuer ? `<p class="cert-card__issuer">${escapeHTML(cert.issuer)}</p>` : ""}
-        ${dateText ? `<p class="cert-card__date">${dateText}</p>` : ""}
-        ${cert.description ? `<p class="cert-card__desc">${escapeHTML(cert.description)}</p>` : ""}
-      </div>
-      ${isAdmin ? `<button class="cert-card__delete" data-id="${cert.id}" data-path="${cert.storage_path}" aria-label="Delete certificate">Delete</button>` : ""}
+    const overlay = document.createElement("div");
+    overlay.className = "cert-card__pdf-overlay";
+    overlay.textContent = isPdf ? "View PDF" : "View Image";
+    cardLink.appendChild(overlay);
+
+    if (isPdf) {
+      const canvas = document.createElement("canvas");
+      canvas.className = "cert-card__canvas";
+      cardLink.appendChild(canvas);
+      generatePdfPreview(cert.image_url, canvas);
+    } else {
+      const img = document.createElement("img");
+      img.className = "cert-card__image";
+      img.src = cert.image_url;
+      img.alt = cert.title;
+      img.loading = "lazy";
+      cardLink.appendChild(img);
+    }
+
+    card.appendChild(cardLink);
+
+    const body = document.createElement("div");
+    body.className = "cert-card__body";
+    body.innerHTML = `
+      <h4 class="cert-card__title">${escapeHTML(cert.title)}</h4>
+      ${cert.issuer ? `<p class="cert-card__issuer">${escapeHTML(cert.issuer)}</p>` : ""}
+      ${dateText ? `<p class="cert-card__date">${dateText}</p>` : ""}
+      ${cert.description ? `<p class="cert-card__desc">${escapeHTML(cert.description)}</p>` : ""}
     `;
+    card.appendChild(body);
+
+    if (isAdmin) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "cert-card__delete";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.dataset.id = cert.id;
+      deleteBtn.dataset.path = cert.storage_path;
+      deleteBtn.addEventListener("click", handleDelete);
+      card.appendChild(deleteBtn);
+    }
 
     galleryEl.appendChild(card);
   });
-
-  if (isAdmin) {
-    galleryEl.querySelectorAll(".cert-card__delete").forEach((btn) => {
-      btn.addEventListener("click", handleDelete);
-    });
-  }
 }
 
 function escapeHTML(str) {

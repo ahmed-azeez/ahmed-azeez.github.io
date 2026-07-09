@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Elle O&#39;Brien on Ahmed Azeez</title>
+    <title>Ahmed Azeez</title>
     <link>https://mscazmy.github.io/authors/elle-obrien/</link>
-    <description>Recent content in Elle O&#39;Brien on Ahmed Azeez</description>
+    <description>Recent content on Ahmed Azeez</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 May 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://mscazmy.github.io/authors/elle-obrien/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Baking the Most Average Chocolate Chip Cookie</title>
-      <link>https://mscazmy.github.io/2018/05/10/cookies/</link>
-      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
-      <guid>https://mscazmy.github.io/2018/05/10/cookies/</guid>
-      <description>The Premise Since the invention of the chocolate chip cookie, the original recipe has been altered and amended in attempts to make the recipe more gooey, chocolatey, and generally tastier than its predecessors. Is there a way to leverage computers and hundreds of existing cookie recipes to generate the most average recipe? Perhaps, like averaging human faces, the average cookie recipe could be the most delicious of them all. We used three different algorithms to test this idea and baked the results.</description>
-    </item>
   </channel>
 </rss>
