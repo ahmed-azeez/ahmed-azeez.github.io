@@ -195,6 +195,8 @@ code{ background-color: var(--codeBG); padding: 2px 5px; color: var(--codeFont);
 .filters-certs{ margin-left: 20px; }
 .filters-certs a{ text-decoration: none; }
 .filters-certs .filters-click{ padding: 5px 0; }
+.filters-about .filters-click, .filters-certs .filters-click{ color: var(--accent); }
+.filters-about .filters-click:hover, .filters-certs .filters-click:hover{ color: var(--content); }
 /* Certificates Page */
 .certs-section { margin-top: 2rem; }
 .certs-header { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
