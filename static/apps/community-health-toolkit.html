@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Health Toolkit</title>
+<style>
+  :root{
+    --ink: #1F2E3D;
+    --paper: #EEF0EA;
+    --paper-alt: #FBFBF8;
+    --line: #C9CFC0;
+    --teal: #2E7D6B;
+    --teal-light: #7FB8AA;
+    --teal-dark: #1E5747;
+    --amber: #D69A3B;
+    --red: #B23A2E;
+    --red-dark: #7A241C;
+    --tab-bg: #DBDFCE;
+    --display-font: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    font-family: var(--body-font);
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  .masthead{
+    padding: 2.2rem 1.5rem 1.4rem;
+    text-align:center;
+    border-bottom: 3px double var(--ink);
+    background: var(--paper);
+  }
+  .masthead h1{
+    font-family: var(--display-font);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 0.3rem;
+    letter-spacing: 0.01em;
+  }
+  .masthead p{
+    margin: 0.2rem 0 0;
+    font-size: 0.95rem;
+    color: #445;
+  }
+  .masthead .tag{
+    display:inline-block;
+    margin-top: 0.6rem;
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-dark);
+    background: rgba(46,125,107,0.1);
+    border: 1px solid var(--teal-light);
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+  }
+
+  .content{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.2rem 3rem;
+  }
+
+  nav.tabs{
+    display:flex;
+    gap: 0.35rem;
+    margin: 1.6rem 0 0;
+    padding: 0 0.4rem;
+    flex-wrap: wrap;
+  }
+  nav.tabs button{
+    font-family: var(--mono-font);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--tab-bg);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-bottom: none;
+    padding: 0.65rem 1.1rem 0.55rem;
+    cursor: pointer;
+    clip-path: polygon(8% 0, 92% 0, 100% 100%, 0% 100%);
+    position: relative;
+    top: 3px;
+    opacity: 0.72;
+    transition: opacity 0.15s ease, top 0.15s ease;
+  }
+  nav.tabs button:hover{ opacity: 0.9; }
+  nav.tabs button.active{
+    background: var(--paper-alt);
+    opacity: 1;
+    top: 0;
+    font-weight: 700;
+    box-shadow: 0 -2px 0 rgba(0,0,0,0.03);
+  }
+
+  main{
+    background: var(--paper-alt);
+    border: 1px solid var(--line);
+    border-radius: 0 4px 4px 4px;
+    padding: 1.8rem;
+    box-shadow: 0 6px 18px rgba(31,46,61,0.08);
+  }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; animation: fade 0.2s ease; }
+  @keyframes fade{ from{opacity:0.4;} to{opacity:1;} }
+
+  .panel h2{
+    font-family: var(--display-font);
+    font-size: 1.5rem;
+    margin: 0 0 0.2rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.5rem;
+  }
+  .panel > .sub{
+    font-size: 0.88rem;
+    color: #556;
+    margin: 0.5rem 0 1.4rem;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+  }
+  @media (max-width: 720px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+
+  .field{ margin-bottom: 1rem; }
+  .field label{
+    display:block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--ink);
+  }
+  .field input[type=number], .field select{
+    width: 100%;
+    padding: 0.55rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: #fff;
+    font-family: var(--mono-font);
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .field input[type=number]:focus, .field select:focus{
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+  }
+
+  .unit-toggle{
+    display:flex;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+  .unit-toggle label{
+    flex:1;
+    text-align:center;
+    font-family: var(--mono-font);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.3rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    cursor:pointer;
+    background:#fff;
+  }
+  .unit-toggle input{ display:none; }
+  .unit-toggle input:checked + span{ font-weight:700; }
+  .unit-toggle label:has(input:checked){
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+  }
+
+  .checkfield{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.88rem;
+  }
+  .checkfield input{ width:16px; height:16px; }
+
+  button.compute{
+    width:100%;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    font-weight:600;
+    border-radius: 3px;
+    cursor:pointer;
+    margin-top: 0.4rem;
+    letter-spacing: 0.01em;
+  }
+  button.compute:hover{ background: var(--teal-dark); }
+
+  .result-card{
+    text-align:center;
+  }
+  .gauge-wrap{ max-width: 280px; margin: 0 auto; }
+  .gauge-svg{ width:100%; height:auto; display:block; }
+
+  .result-value{
+    font-family: var(--mono-font);
+    font-size: 2.1rem;
+    font-weight:700;
+    margin: 0.2rem 0 0;
+    line-height:1;
+  }
+  .result-category{
+    display:inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight:700;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .cat-teal{ background: rgba(46,125,107,0.15); color: var(--teal-dark); }
+  .cat-amber{ background: rgba(214,154,59,0.18); color: #8a5f1c; }
+  .cat-red{ background: rgba(178,58,46,0.15); color: var(--red-dark); }
+
+  .explain{
+    text-align:left;
+    font-size: 0.88rem;
+    line-height:1.5;
+    margin-top: 1rem;
+    color: #334;
+  }
+
+  .say-this{
+    text-align:left;
+    margin-top: 1rem;
+    border: 1px dashed var(--ink);
+    border-radius: 4px;
+    padding: 0.8rem 0.9rem;
+    background: rgba(46,125,107,0.05);
+  }
+  .say-this .label{
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight:700;
+    color: var(--teal-dark);
+    display:block;
+    margin-bottom: 0.35rem;
+  }
+  .say-this p{ margin:0; font-size: 0.88rem; line-height:1.5; font-style: italic; }
+
+  .crisis-alert{
+    margin-top: 0.8rem;
+    background: var(--red);
+    color: #fff;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight:700;
+    display:none;
+  }
+
+  .print-btn{
+    margin-top: 1rem;
+    background: none;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    border-radius: 3px;
+    cursor:pointer;
+    font-family: var(--mono-font);
+  }
+  .print-btn:hover{ background: var(--ink); color:#fff; }
+
+  .placeholder{
+    color: #889;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: 2.5rem;
+  }
+
+  footer{
+    max-width: 980px;
+    margin: 1.4rem auto 0;
+    padding: 0 1.6rem;
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    color: #667;
+    line-height:1.6;
+  }
+
+  #print-card{ display:none; }
+
+  @media print{
+    body *{ visibility:hidden; }
+    #print-card, #print-card *{ visibility:visible; }
+    #print-card{
+      display:block;
+      position:absolute;
+      top:0; left:0; width:100%;
+      padding: 2rem;
+      font-family: var(--body-font);
+    }
+    #print-card h2{ font-family: var(--display-font); border-bottom:2px solid #000; padding-bottom:0.4rem; }
+    #print-card .pc-value{ font-family: var(--mono-font); font-size: 2.4rem; font-weight:700; }
+    #print-card .pc-cat{ font-weight:700; font-size:1rem; margin: 0.4rem 0 1rem; }
+    #print-card .pc-explain{ font-size:0.95rem; line-height:1.6; margin-bottom:1rem; }
+    #print-card .pc-say{ border:1px dashed #000; padding:0.8rem 1rem; font-style:italic; }
+    #print-card .pc-foot{ margin-top:2rem; font-size:0.75rem; color:#555; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>Community Health Toolkit</h1>
+  <p>Quick, explainable screening calculators for outreach, clinics, and health fairs.</p>
+  <span class="tag">Offline-ready · No data leaves this device</span>
+</div>
+
+<div class="content">
+
+  <nav class="tabs">
+    <button data-panel="bmi" class="active">BMI</button>
+    <button data-panel="bp">Blood Pressure</button>
+    <button data-panel="hydration">Hydration</button>
+    <button data-panel="diabetes">Diabetes Risk</button>
+  </nav>
+
+  <main>
+
+    <!-- BMI PANEL -->
+    <section id="bmi" class="panel active">
+      <h2>Body Mass Index</h2>
+      <p class="sub">A quick screening number for weight status. Not valid for children, pregnant women, or highly muscular adults &mdash; say so if it applies.</p>
+      <div class="grid">
+        <div>
+          <div class="unit-toggle">
+            <label><input type="radio" name="bmi-unit" value="metric" checked onchange="toggleBMIUnits()"><span>Metric (kg / cm)</span></label>
+            <label><input type="radio" name="bmi-unit" value="imperial" onchange="toggleBMIUnits()"><span>Imperial (lb / in)</span></label>
+          </div>
+          <div class="field">
+            <label id="bmi-weight-label">Weight (kg)</label>
+            <input type="number" id="bmi-weight" min="1" step="0.1" placeholder="e.g. 68">
+          </div>
+          <div class="field">
+            <label id="bmi-height-label">Height (cm)</label>
+            <input type="number" id="bmi-height" min="1" step="0.1" placeholder="e.g. 165">
+          </div>
+          <button class="compute" onclick="computeBMI()">Calculate BMI</button>
+        </div>
+        <div class="result-card">
+          <div id="bmi-result">
+            <div class="gauge-wrap"><div id="bmi-gauge"></div></div>
+            <p class="placeholder">Enter weight and height to see the result.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOOD PRESSURE PANEL -->
+    <section id="bp" class="panel">
+      <h2>Blood Pressure Category</h2>
+      <p class="sub">Based on American Heart Association adult categories. A single reading is a snapshot, not a diagnosis &mdash; encourage repeat checks.</p>
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label>Systolic (top number, mmHg)</label>
+            <input type="number" id="bp-sys" min="50" max="260" placeholder="e.g. 128">
+          </div>
+          <div class="field">
+            <label>Diastolic (bottom number, mmHg)</label>
+            <input type="number" id="bp-dia" min="30" max="160" placeholder="e.g. 82">
+          </div>
+          <button class="compute" onclick="computeBP()">Check Category</button>
+        </div>
+        <div class="result-card">
+          <div id="bp-result">
+            <div class="gauge-wrap"><div id="bp-gauge"></div></div>
+            <p class="placeholder">Enter both numbers to see the category.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HYDRATION PANEL -->
+    <section id="hydration" class="panel">
+      <h2>Daily Hydration Estimate</h2>
+      <p class="sub">A general planning estimate for fluid needs &mdash; not medical guidance for people with kidney, heart, or fluid-restriction conditions.</p>
+      <div class="grid">
+        <div>
+          <div class="unit-toggle">
+            <label><input type="radio" name="hyd-unit" value="metric" checked onchange="toggleHydrationUnits()"><span>Metric (kg)</span></label>
+            <label><input type="radio" name="hyd-unit" value="imperial" onchange="toggleHydrationUnits()"><span>Imperial (lb)</span></label>
+          </div>
+          <div class="field">
+            <label id="hyd-weight-label">Weight (kg)</label>
+            <input type="number" id="hyd-weight" min="1" step="0.1" placeholder="e.g. 68">
+          </div>
+          <div class="field">
+            <label>Activity level</label>
+            <select id="hyd-activity">
+              <option value="0">Sedentary (mostly sitting)</option>
+              <option value="350">Light activity</option>
+              <option value="700">Moderate activity / on feet</option>
+              <option value="1000">Intense / manual labor</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Climate</label>
+            <select id="hyd-climate">
+              <option value="0">Mild / temperate</option>
+              <option value="500">Hot or humid</option>
+            </select>
+          </div>
+          <button class="compute" onclick="computeHydration()">Estimate Needs</button>
+        </div>
+        <div class="result-card">
+          <div id="hyd-result">
+            <div class="gauge-wrap"><div id="hyd-gauge"></div></div>
+            <p class="placeholder">Fill in the fields to see a daily estimate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIABETES RISK PANEL -->
+    <section id="diabetes" class="panel">
+      <h2>Type 2 Diabetes Risk Screener</h2>
+      <p class="sub">Modeled loosely on the CDC Prediabetes Risk Test factors. A screening prompt only &mdash; a high score means "get tested," not "you have diabetes."</p>
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label>Age</label>
+            <select id="dm-age">
+              <option value="0">Under 40</option>
+              <option value="1">40&ndash;49</option>
+              <option value="2">50&ndash;59</option>
+              <option value="3">60 or older</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Sex</label>
+            <select id="dm-sex" onchange="toggleGestational()">
+              <option value="0">Woman</option>
+              <option value="1">Man</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>BMI category</label>
+            <select id="dm-bmi">
+              <option value="0">Under 25</option>
+              <option value="1">25&ndash;29.9</option>
+              <option value="2">30&ndash;39.9</option>
+              <option value="3">40 or above</option>
+            </select>
+          </div>
+          <div class="checkfield" id="dm-gest-wrap">
+            <input type="checkbox" id="dm-gest"><label for="dm-gest">Diagnosed with gestational diabetes</label>
+          </div>
+          <div class="checkfield">
+            <input type="checkbox" id="dm-family"><label for="dm-family">Parent or sibling has diabetes</label>
+          </div>
+          <div class="checkfield">
+            <input type="checkbox" id="dm-bp"><label for="dm-bp">Told they have high blood pressure</label>
+          </div>
+          <div class="checkfield">
+            <input type="checkbox" id="dm-active" checked><label for="dm-active">Physically active most days</label>
+          </div>
+          <button class="compute" onclick="computeDiabetes()">Screen Risk</button>
+        </div>
+        <div class="result-card">
+          <div id="dm-result">
+            <div class="gauge-wrap"><div id="dm-gauge"></div></div>
+            <p class="placeholder">Answer the questions to see a risk indication.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  FOR EDUCATION &amp; SCREENING AWARENESS ONLY. These tools do not diagnose any condition and do not replace clinical
+  evaluation. Refer anyone with concerning results, or anyone in visible distress, to a qualified health worker
+  or clinic promptly.
+</footer>
+
+<div id="print-card"></div>
+
+<script>
+  // ---------- tab navigation ----------
+  document.querySelectorAll('nav.tabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.panel).classList.add('active');
+    });
+  });
+
+  // ---------- gauge engine ----------
+  function polarPoint(cx,cy,r,angleDeg){
+    const rad = angleDeg*Math.PI/180;
+    return { x: cx + r*Math.cos(rad), y: cy - r*Math.sin(rad) };
+  }
+  function arcPath(cx,cy,r,startFrac,endFrac){
+    const a0 = 180 - startFrac*180;
+    const a1 = 180 - endFrac*180;
+    const p0 = polarPoint(cx,cy,r,a0);
+    const p1 = polarPoint(cx,cy,r,a1);
+    const large = (a0-a1) > 180 ? 1 : 0;
+    return `M ${p0.x.toFixed(2)} ${p0.y.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
+  }
+  function buildGauge(containerEl, bands, valueFraction){
+    valueFraction = Math.max(0, Math.min(1, valueFraction));
+    const cx=110, cy=105, r=80, needleLen=68;
+    const paths = bands.map(b =>
+      `<path d="${arcPath(cx,cy,r,b.start,b.end)}" stroke="${b.color}" stroke-width="20" fill="none" stroke-linecap="butt"/>`
+    ).join('');
+    const nAngle = 180 - valueFraction*180;
+    const tip = polarPoint(cx,cy,needleLen,nAngle);
+    containerEl.innerHTML =
+      `<svg viewBox="0 0 220 118" class="gauge-svg" role="img" aria-label="Result gauge">
+        ${paths}
+        <line x1="${cx}" y1="${cy}" x2="${tip.x.toFixed(2)}" y2="${tip.y.toFixed(2)}" stroke="#1F2E3D" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="${cx}" cy="${cy}" r="8" fill="#1F2E3D"/>
+      </svg>`;
+  }
+
+  function setPrintCard(title, value, category, catClass, explanation, sayThis){
+    const colorMap = { 'cat-teal':'#1E5747', 'cat-amber':'#8a5f1c', 'cat-red':'#7A241C' };
+    document.getElementById('print-card').innerHTML = `
+      <h2>${title}</h2>
+      <div class="pc-value">${value}</div>
+      <div class="pc-cat" style="color:${colorMap[catClass] || '#000'}">${category}</div>
+      <div class="pc-explain">${explanation}</div>
+      <div class="pc-say"><strong>In plain terms:</strong> ${sayThis}</div>
+      <div class="pc-foot">Screening estimate only &mdash; not a diagnosis. Prepared with the Community Health Toolkit.</div>
+    `;
+  }
+
+  // ---------- BMI ----------
+  function toggleBMIUnits(){
+    const metric = document.querySelector('input[name="bmi-unit"]:checked').value === 'metric';
+    document.getElementById('bmi-weight-label').textContent = metric ? 'Weight (kg)' : 'Weight (lb)';
+    document.getElementById('bmi-height-label').textContent = metric ? 'Height (cm)' : 'Height (in)';
+  }
+  function computeBMI(){
+    const metric = document.querySelector('input[name="bmi-unit"]:checked').value === 'metric';
+    const w = parseFloat(document.getElementById('bmi-weight').value);
+    const h = parseFloat(document.getElementById('bmi-height').value);
+    if(!w || !h){ return; }
+    let bmi;
+    if(metric){
+      const m = h/100;
+      bmi = w / (m*m);
+    } else {
+      bmi = 703 * w / (h*h);
+    }
+    bmi = Math.round(bmi*10)/10;
+
+    let category, catClass, explanation, sayThis;
+    if(bmi < 18.5){
+      category='Underweight'; catClass='cat-amber';
+      explanation='This suggests body weight is low relative to height, which can be linked to nutrition gaps or an underlying health issue.';
+      sayThis="Your weight is a bit low for your height. Let's talk about what you're eating day to day and whether a check-up makes sense.";
+    } else if(bmi < 25){
+      category='Normal range'; catClass='cat-teal';
+      explanation='This is within the range associated with lower health risk for most adults.';
+      sayThis="Your number is in the healthy range for your height. Keep up whatever you're already doing.";
+    } else if(bmi < 30){
+      category='Overweight'; catClass='cat-amber';
+      explanation='This range is associated with somewhat higher risk for conditions like high blood pressure and diabetes.';
+      sayThis='Your weight is a little above the typical range for your height. Small, steady changes to food and movement can help.';
+    } else {
+      category='Obese'; catClass='cat-red';
+      explanation='This range is associated with meaningfully higher risk for heart disease, diabetes, and joint problems.';
+      sayThis="Your number is in a higher-risk range. I'd like to connect you with a health worker to talk through some options together.";
+    }
+
+    const fraction = Math.max(0, Math.min(1, (bmi-15)/25));
+
+    document.getElementById('bmi-result').innerHTML = `
+      <div class="gauge-wrap"><div id="bmi-gauge"></div></div>
+      <p class="result-value">${bmi}</p>
+      <span class="result-category ${catClass}">${category}</span>
+      <p class="explain">${explanation}</p>
+      <div class="say-this"><span class="label">Say this</span><p>"${sayThis}"</p></div>
+      <button class="print-btn" onclick="printResult('bmi')">Print result card</button>
+    `;
+    buildGauge(document.getElementById('bmi-gauge'), [
+      {start:0, end:0.14, color:'#D69A3B'},
+      {start:0.14, end:0.4, color:'#2E7D6B'},
+      {start:0.4, end:0.6, color:'#D69A3B'},
+      {start:0.6, end:1, color:'#B23A2E'}
+    ], fraction);
+
+    setPrintCard('Body Mass Index', bmi, category, catClass, explanation, sayThis);
+  }
+
+  // ---------- BLOOD PRESSURE ----------
+  function computeBP(){
+    const sys = parseFloat(document.getElementById('bp-sys').value);
+    const dia = parseFloat(document.getElementById('bp-dia').value);
+    if(!sys || !dia){ return; }
+
+    let category, catClass, explanation, sayThis, crisis=false;
+    if(sys >= 180 || dia >= 120){
+      category='Hypertensive Crisis'; catClass='cat-red'; crisis=true;
+      explanation='These numbers require prompt medical attention, especially alongside symptoms like chest pain, shortness of breath, or vision changes.';
+      sayThis='These numbers are high enough that we need to get you checked by a health worker right away.';
+    } else if(sys >= 140 || dia >= 90){
+      category='High Blood Pressure (Stage 2)'; catClass='cat-red';
+      explanation='This level is associated with meaningfully higher risk for heart attack and stroke over time.';
+      sayThis="Your blood pressure is running high. It's worth getting this checked by a clinic and rechecked regularly.";
+    } else if(sys >= 130 || dia >= 80){
+      category='High Blood Pressure (Stage 1)'; catClass='cat-amber';
+      explanation='This range often calls for lifestyle changes and closer monitoring, sometimes alongside medication.';
+      sayThis="Your blood pressure is a bit above the healthy range. Let's keep an eye on it and talk about small changes that help.";
+    } else if(sys >= 120){
+      category='Elevated'; catClass='cat-amber';
+      explanation='Not yet high blood pressure, but a signal worth watching before it climbs further.';
+      sayThis='Your top number is a little elevated. Nothing urgent, but worth watching over the next few checks.';
+    } else {
+      category='Normal'; catClass='cat-teal';
+      explanation='This reading is within the healthy range for most adults.';
+      sayThis='Your blood pressure looks healthy today.';
+    }
+
+    const fraction = Math.max(0, Math.min(1, (sys-90)/90));
+    document.getElementById('bp-result').innerHTML = `
+      <div class="gauge-wrap"><div id="bp-gauge"></div></div>
+      <p class="result-value">${sys}/${dia}</p>
+      <span class="result-category ${catClass}">${category}</span>
+      <p class="explain">${explanation}</p>
+      <div class="crisis-alert" style="display:${crisis ? 'block':'none'}">⚠ Seek medical care now &mdash; do not wait.</div>
+      <div class="say-this"><span class="label">Say this</span><p>"${sayThis}"</p></div>
+      <button class="print-btn" onclick="printResult('bp')">Print result card</button>
+    `;
+    buildGauge(document.getElementById('bp-gauge'), [
+      {start:0, end:0.333, color:'#2E7D6B'},
+      {start:0.333, end:0.444, color:'#D69A3B'},
+      {start:0.444, end:0.556, color:'#D69A3B'},
+      {start:0.556, end:1, color:'#B23A2E'}
+    ], fraction);
+
+    setPrintCard('Blood Pressure', `${sys}/${dia} mmHg`, category, catClass, explanation, sayThis);
+  }
+
+  // ---------- HYDRATION ----------
+  function toggleHydrationUnits(){
+    const metric = document.querySelector('input[name="hyd-unit"]:checked').value === 'metric';
+    document.getElementById('hyd-weight-label').textContent = metric ? 'Weight (kg)' : 'Weight (lb)';
+  }
+  function computeHydration(){
+    const metric = document.querySelector('input[name="hyd-unit"]:checked').value === 'metric';
+    let w = parseFloat(document.getElementById('hyd-weight').value);
+    if(!w){ return; }
+    if(!metric){ w = w * 0.453592; }
+    const activity = parseFloat(document.getElementById('hyd-activity').value);
+    const climate = parseFloat(document.getElementById('hyd-climate').value);
+    const ml = w*35 + activity + climate;
+    const liters = Math.round((ml/1000)*10)/10;
+    const cups = Math.round(ml/250);
+
+    let category, catClass;
+    if(liters < 2){ category='Lower daily need'; catClass='cat-teal'; }
+    else if(liters < 3.5){ category='Typical daily need'; catClass='cat-teal'; }
+    else { category='Higher daily need'; catClass='cat-teal'; }
+
+    const explanation = 'This is a rough planning estimate based on body weight, activity, and climate &mdash; actual needs vary and should rise further with fever, illness, or breastfeeding.';
+    const sayThis = `Aim for roughly ${liters} liters of water a day (about ${cups} cups), and drink more if it's hot or you're sweating a lot.`;
+
+    const fraction = Math.max(0, Math.min(1, (liters-1)/4));
+    document.getElementById('hyd-result').innerHTML = `
+      <div class="gauge-wrap"><div id="hyd-gauge"></div></div>
+      <p class="result-value">${liters} L</p>
+      <span class="result-category ${catClass}">${category}</span>
+      <p class="explain">${explanation} That's about <strong>${cups} cups (250 ml each)</strong> across the day.</p>
+      <div class="say-this"><span class="label">Say this</span><p>"${sayThis}"</p></div>
+      <button class="print-btn" onclick="printResult('hydration')">Print result card</button>
+    `;
+    buildGauge(document.getElementById('hyd-gauge'), [
+      {start:0, end:0.25, color:'#7FB8AA'},
+      {start:0.25, end:0.625, color:'#2E7D6B'},
+      {start:0.625, end:1, color:'#1E5747'}
+    ], fraction);
+
+    setPrintCard('Daily Hydration Estimate', `${liters} L / day`, category, catClass, explanation, sayThis);
+  }
+
+  // ---------- DIABETES RISK ----------
+  function toggleGestational(){
+    const isWoman = document.getElementById('dm-sex').value === '0';
+    document.getElementById('dm-gest-wrap').style.display = isWoman ? 'flex' : 'none';
+    if(!isWoman) document.getElementById('dm-gest').checked = false;
+  }
+  function computeDiabetes(){
+    let score = 0;
+    score += parseInt(document.getElementById('dm-age').value);
+    score += parseInt(document.getElementById('dm-sex').value);
+    score += parseInt(document.getElementById('dm-bmi').value);
+    if(document.getElementById('dm-gest').checked) score += 1;
+    if(document.getElementById('dm-family').checked) score += 1;
+    if(document.getElementById('dm-bp').checked) score += 1;
+    if(!document.getElementById('dm-active').checked) score += 1;
+
+    let category, catClass, explanation, sayThis;
+    if(score >= 5){
+      category='Increased risk'; catClass='cat-red';
+      explanation="A score of 5 or higher suggests it's worth getting a blood sugar test, following the same logic as the CDC Prediabetes Risk Test.";
+      sayThis="Based on your answers, it would be smart to get a blood sugar test soon. It doesn't mean you have diabetes &mdash; it means it's worth checking.";
+    } else {
+      category='Lower risk'; catClass='cat-teal';
+      explanation='Your answers put you in a lower-risk group for now, though risk can change over time with age and weight.';
+      sayThis='Your answers put you in a lower-risk group right now. Still worth a check-up every so often as things change.';
+    }
+
+    const fraction = Math.max(0, Math.min(1, score/9));
+    document.getElementById('dm-result').innerHTML = `
+      <div class="gauge-wrap"><div id="dm-gauge"></div></div>
+      <p class="result-value">${score} / 9</p>
+      <span class="result-category ${catClass}">${category}</span>
+      <p class="explain">${explanation}</p>
+      <div class="say-this"><span class="label">Say this</span><p>"${sayThis}"</p></div>
+      <button class="print-btn" onclick="printResult('diabetes')">Print result card</button>
+    `;
+    buildGauge(document.getElementById('dm-gauge'), [
+      {start:0, end:0.556, color:'#2E7D6B'},
+      {start:0.556, end:1, color:'#B23A2E'}
+    ], fraction);
+
+    setPrintCard('Type 2 Diabetes Risk Screen', `${score} / 9`, category, catClass, explanation, sayThis);
+  }
+
+  function printResult(panel){
+    window.print();
+  }
+</script>
+</body>
+</html>
