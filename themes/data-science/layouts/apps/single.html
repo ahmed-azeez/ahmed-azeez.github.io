@@ -1,0 +1,47 @@
+{{ partial "header.html" . }}
+
+<main class="apps-page">
+  <div class='post-background'>
+    <div class='post-gradient'></div>
+    {{ partial "simple-nav.html" . }}
+  </div>
+
+  <article class="article">
+
+    <section class="post__info">
+      <h1 class="post__title">{{ .Title }}</h1>
+    </section>
+
+    <section class="post__content">
+      <p>A collection of my interactive HTML applications. Click on any app to launch it.</p>
+    </section>
+
+    <section class="apps-section">
+      <div id="apps-gallery" class="apps-gallery">
+        {{ $appsDir := "static/apps" }}
+        {{ range (readDir $appsDir) }}
+          {{ if and (not .IsDir) (hasSuffix .Name ".html") }}
+            {{ $appName := replace .Name ".html" "" }}
+            {{ $appTitle := replace $appName "-" " " | title }}
+            <div class="app-card">
+              <a class="app-card__link" href="/apps/{{ .Name }}" target="_blank">
+                <div class="app-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <div class="app-card__body">
+                  <h4 class="app-card__title">{{ $appTitle }}</h4>
+                  <p class="app-card__desc">Launch Application</p>
+                </div>
+              </a>
+            </div>
+          {{ end }}
+        {{ end }}
+      </div>
+    </section>
+
+  </article>
+
+</main>
+<footer class='footer__single'>
+  {{ partial "footer.html" . }}
+</footer>

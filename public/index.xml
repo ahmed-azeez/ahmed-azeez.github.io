@@ -309,5 +309,12 @@
       <guid>https://mscazmy.github.io/contact/</guid>
       <description>While I do read every message I receive, and try to respond in a timely manner, I&amp;rsquo;m only human and messages slip past me. I appreciate your patience!</description>
     </item>
+    <item>
+      <title>My Apps</title>
+      <link>https://mscazmy.github.io/apps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mscazmy.github.io/apps/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
