@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content &amp; Face Validity Index Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14213D; --ink-soft:#4A5A7A; --ink-faint:#8C97AD;
+  --paper:#F3F5F8; --surface:#FFFFFF;
+  --data:#0C7C92; --data-deep:#0A5F70;
+  --good:#2F9E44; --good-bg:#E8F6EB;
+  --warn:#B9791F; --warn-bg:#FBF1DE;
+  --poor:#C23B44; --poor-bg:#FAEAEC;
+  --line:#DCE3EA; --line-soft:#EAEEF2;
+  --radius:10px; --radius-sm:6px;
+  --shadow:0 1px 2px rgba(20,33,61,.04), 0 4px 16px rgba(20,33,61,.06);
+  --font-display:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.page{max-width:1120px;margin:0 auto;padding:28px 20px 80px;}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-soft);text-decoration:none;margin-bottom:18px;}
+.back-link:hover{color:var(--data);}
+
+.hero{padding:8px 0 26px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--data);font-weight:500;margin:0 0 10px;}
+.hero h1{font-family:var(--font-display);font-size:clamp(24px,4vw,34px);font-weight:700;letter-spacing:-.01em;margin:0 0 10px;}
+.hero p.lede{max-width:640px;color:var(--ink-soft);margin:0 0 20px;font-size:14.5px;}
+
+.mode-toggle{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;}
+.mode-toggle button{border:none;background:transparent;padding:8px 18px;border-radius:999px;font-family:var(--font-body);font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background .15s,color .15s;}
+.mode-toggle button.active{background:var(--ink);color:#fff;}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:20px;}
+.panel h2{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;}
+.panel .panel-desc{font-size:13px;color:var(--ink-soft);margin:0 0 16px;}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.btn{font-family:var(--font-body);font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,color .15s;}
+.btn:hover{border-color:var(--data);color:var(--data-deep);}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;}
+.btn.primary:hover{background:var(--data-deep);border-color:var(--data-deep);color:#fff;}
+.btn.ghost{border-color:transparent;background:transparent;}
+.btn.ghost:hover{background:var(--line-soft);border-color:var(--line-soft);color:var(--ink);}
+.btn:focus-visible,select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--data);outline-offset:2px;}
+
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);margin:16px 0 2px;}
+.legend .dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:14px;max-height:520px;overflow-y:auto;}
+table.matrix{border-collapse:separate;border-spacing:0;width:100%;min-width:560px;}
+table.matrix th,table.matrix td{padding:8px 10px;border-bottom:1px solid var(--line-soft);text-align:center;white-space:nowrap;}
+table.matrix thead th{background:var(--paper);font-family:var(--font-body);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:600;position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line);}
+table.matrix td.item-cell,table.matrix th.item-head{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;min-width:230px;max-width:300px;white-space:normal;box-shadow:1px 0 0 var(--line);}
+table.matrix thead th.item-head{background:var(--paper);z-index:3;}
+.item-row-inner{display:flex;align-items:center;gap:6px;}
+.item-input{border:none;background:transparent;font-family:var(--font-body);font-size:13.5px;color:var(--ink);width:100%;padding:4px 2px;border-radius:4px;}
+.item-input:focus-visible{background:var(--paper);outline:2px solid var(--data);}
+.expert-head-inner{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.expert-input{border:none;background:transparent;font-family:var(--font-body);font-size:11.5px;font-weight:600;color:var(--ink-soft);width:68px;text-align:center;border-radius:4px;padding:2px;}
+.expert-input:focus-visible{background:var(--surface);outline:2px solid var(--data);color:var(--ink);}
+.icon-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:14px;line-height:1;padding:3px 5px;border-radius:4px;}
+.icon-x:hover{color:var(--poor);background:var(--poor-bg);}
+
+.rating-select{font-family:var(--font-mono);font-size:14px;font-weight:600;width:46px;height:34px;border-radius:6px;border:1px solid var(--line);text-align:center;text-align-last:center;cursor:pointer;appearance:none;-webkit-appearance:none;transition:background .15s;}
+
+.mono{font-family:var(--font-mono);font-weight:500;}
+td.icvi-cell{font-size:14px;font-weight:600;color:var(--ink);}
+
+.badge{display:inline-flex;align-items:center;font-family:var(--font-body);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.badge.good{background:var(--good-bg);color:var(--good);}
+.badge.warn{background:var(--warn-bg);color:var(--warn);}
+.badge.poor{background:var(--poor-bg);color:var(--poor);}
+.badge.muted{background:var(--line-soft);color:var(--ink-faint);}
+
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:20px;}
+.result-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;}
+.result-card .rc-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
+.result-card .rc-value{font-family:var(--font-mono);font-size:32px;font-weight:600;color:var(--ink);line-height:1;margin-bottom:10px;}
+.result-card .rc-note{font-size:12.5px;color:var(--ink-soft);}
+.result-card.info .rc-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line-soft);}
+.result-card.info .rc-row:last-child{border-bottom:none;}
+.result-card.info .rc-row span:last-child{font-family:var(--font-mono);font-weight:600;color:var(--ink);}
+
+details.methodology{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:4px 22px;margin-bottom:20px;}
+details.methodology summary{cursor:pointer;padding:16px 0;font-family:var(--font-display);font-weight:600;font-size:14.5px;list-style:none;display:flex;align-items:center;justify-content:space-between;}
+details.methodology summary::-webkit-details-marker{display:none;}
+details.methodology summary::after{content:'+';font-family:var(--font-mono);font-size:18px;color:var(--data);}
+details.methodology[open] summary::after{content:'\2013';}
+.method-body{padding:0 0 22px;font-size:13.5px;color:var(--ink-soft);}
+.method-body h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink);margin:18px 0 8px;}
+.method-body code{font-family:var(--font-mono);background:var(--paper);padding:2px 6px;border-radius:4px;font-size:12.5px;color:var(--data-deep);}
+.threshold-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}
+.threshold-table th,.threshold-table td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line-soft);}
+.threshold-table td.mono{color:var(--ink);}
+.method-body ol.refs{padding-left:18px;font-size:12.5px;}
+.method-body ol.refs li{margin-bottom:4px;}
+
+.actions-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding-top:4px;}
+.credit{font-size:12px;color:var(--ink-faint);}
+
+@media (max-width:640px){
+  .page{padding:20px 14px 60px;}
+  .actions-bar{flex-direction:column;align-items:stretch;}
+  .actions-bar > div{display:flex;gap:10px;flex-wrap:wrap;}
+}
+@media print{
+  .toolbar,.mode-toggle,.icon-x,.actions-bar .btn,.back-link{display:none!important;}
+  .panel,.result-card,details.methodology{box-shadow:none;border:1px solid #999;}
+  body{background:#fff;}
+  .table-wrap{max-height:none;overflow:visible;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back-link" href="../" aria-label="Back to Apps">&larr; Apps</a>
+
+  <header class="hero">
+    <p class="eyebrow" id="eyebrow">Content relevance</p>
+    <h1 id="heroTitle">Content Validity Index Calculator</h1>
+    <p class="lede" id="heroLede">Enter an expert panel's item ratings to get I-CVI, S-CVI/Ave, S-CVI/UA, and modified kappa &mdash; scored against Lynn (1986) / Polit &amp; Beck (2006) thresholds.</p>
+    <div class="mode-toggle" role="group" aria-label="Validity type">
+      <button id="modeCviBtn" onclick="setMode('cvi')">Content Validity (CVI)</button>
+      <button id="modeFviBtn" onclick="setMode('fvi')">Face Validity (FVI)</button>
+    </div>
+  </header>
+
+  <section class="panel">
+    <h2>Expert panel & items</h2>
+    <p class="panel-desc">Rate each item 1&ndash;4 per expert. Item wording and expert names are editable directly in the table.</p>
+    <div class="toolbar">
+      <button class="btn" onclick="addExpert()">+ Add expert</button>
+      <button class="btn" onclick="addItem()">+ Add item</button>
+      <button class="btn" onclick="loadSample()">Load sample data</button>
+      <button class="btn ghost" onclick="resetAll()">Clear ratings</button>
+    </div>
+
+    <div class="legend" id="legend"></div>
+
+    <div class="table-wrap">
+      <table class="matrix" id="matrixTable"></table>
+    </div>
+  </section>
+
+  <div class="results-grid">
+    <div class="result-card">
+      <div class="rc-label" id="aveLabel">S-CVI/Ave</div>
+      <div class="rc-value" id="aveValue">&mdash;</div>
+      <div class="rc-note" id="aveNote">Average of all item-level indices.</div>
+    </div>
+    <div class="result-card">
+      <div class="rc-label" id="uaLabel">S-CVI/UA</div>
+      <div class="rc-value" id="uaValue">&mdash;</div>
+      <div class="rc-note" id="uaNote">Share of items with universal agreement.</div>
+    </div>
+    <div class="result-card info">
+      <div class="rc-label">Panel & threshold</div>
+      <div class="rc-row"><span>Experts</span><span id="infoExperts">&mdash;</span></div>
+      <div class="rc-row"><span>Items</span><span id="infoItems">&mdash;</span></div>
+      <div class="rc-row"><span id="infoThreshLabel">I-CVI threshold</span><span id="infoThresh">&mdash;</span></div>
+    </div>
+  </div>
+
+  <details class="methodology">
+    <summary>Methodology &amp; thresholds<span></span></summary>
+    <div class="method-body">
+      <p>Each expert rates every item on a 4-point scale (1 = not relevant/clear, 2 = somewhat, 3 = quite, 4 = highly). Ratings of 3 or 4 count as agreement.</p>
+
+      <h3>Item level</h3>
+      <p><code>I-CVI = (experts rating 3 or 4) / (total experts who rated the item)</code></p>
+
+      <h3>Scale level</h3>
+      <p><code>S-CVI/Ave</code> &mdash; mean of all I-CVIs. Acceptable at &ge;0.90 (Polit &amp; Beck, 2006; Polit, Beck &amp; Owen, 2007).<br>
+      <code>S-CVI/UA</code> &mdash; proportion of items with I-CVI = 1.00 (every expert agreed). Acceptable at &ge;0.80.</p>
+
+      <h3>I-CVI acceptability by panel size</h3>
+      <table class="threshold-table">
+        <thead><tr><th>Experts</th><th>Minimum I-CVI</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td class="mono">0.80</td><td>Davis (1992)</td></tr>
+          <tr><td>3&ndash;5</td><td class="mono">1.00</td><td>Polit &amp; Beck (2006); Polit et al. (2007)</td></tr>
+          <tr><td>6&ndash;8</td><td class="mono">0.83</td><td>Lynn (1986)</td></tr>
+          <tr><td>9+</td><td class="mono">0.78</td><td>Lynn (1986)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Modified kappa (chance-corrected agreement)</h3>
+      <p>Raw I-CVI doesn't adjust for the chance that experts agree by luck alone, especially with small panels. The modified kappa corrects for this:</p>
+      <p><code>Pc = [N! / (A!(N&minus;A)!)] &times; 0.5^N</code> &nbsp;&mdash;&nbsp; probability of chance agreement<br>
+      <code>&kappa; = (I-CVI &minus; Pc) / (1 &minus; Pc)</code></p>
+      <p>where N = experts who rated the item, A = experts agreeing (rating 3 or 4).</p>
+      <p>Interpretation (Cicchetti &amp; Sparrow, 1981; Fleiss, 1981): &kappa; &gt; 0.74 excellent &middot; 0.60&ndash;0.74 good &middot; 0.40&ndash;0.59 fair &middot; &lt;0.40 poor.</p>
+
+      <h3>Face Validity Index (FVI)</h3>
+      <p>Identical formulas applied to expert (or target-population) ratings of item <em>clarity and comprehensibility</em> rather than relevance &mdash; reported as I-FVI, S-FVI/Ave, and S-FVI/UA.</p>
+
+      <h3>References</h3>
+      <ol class="refs">
+        <li>Lynn, M. R. (1986). Determination and quantification of content validity. <em>Nursing Research, 35</em>(6), 382&ndash;385.</li>
+        <li>Polit, D. F., &amp; Beck, C. T. (2006). The content validity index: Are you sure you know what's being reported? Critique and recommendations. <em>Research in Nursing &amp; Health, 29</em>, 489&ndash;497.</li>
+        <li>Polit, D. F., Beck, C. T., &amp; Owen, S. V. (2007). Is the CVI an acceptable indicator of content validity? Appraisal and recommendations. <em>Research in Nursing &amp; Health, 30</em>, 459&ndash;467.</li>
+        <li>Davis, L. L. (1992). Instrument review: Getting the most from a panel of experts. <em>Applied Nursing Research, 5</em>(4), 194&ndash;197.</li>
+        <li>Cicchetti, D. V., &amp; Sparrow, S. (1981). Developing criteria for establishing interrater reliability of specific items. <em>American Journal of Mental Deficiency, 86</em>, 127&ndash;137.</li>
+        <li>Fleiss, J. L. (1981). <em>Statistical Methods for Rates and Proportions.</em> Wiley.</li>
+      </ol>
+    </div>
+  </details>
+
+  <div class="actions-bar">
+    <span class="credit">Runs entirely in your browser &mdash; no data leaves this page.</span>
+    <div>
+      <button class="btn" onclick="printReport()">Print / Save PDF</button>
+      <button class="btn primary" onclick="exportCSV()">Export CSV</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const LABELS = {
+  cvi: {
+    key:'cvi', title:'Content Validity Index Calculator', short:'CVI', itemIndexShort:'I-CVI',
+    scaleAve:'S-CVI/Ave', scaleUA:'S-CVI/UA', eyebrow:'Content relevance',
+    lede:"Enter an expert panel's item ratings to get I-CVI, S-CVI/Ave, S-CVI/UA, and modified kappa \u2014 scored against Lynn (1986) / Polit & Beck (2006) thresholds.",
+    itemColHead:'Item (content)',
+    ratingLabels:{1:'Not relevant',2:'Somewhat relevant',3:'Quite relevant',4:'Highly relevant'},
+    aveNote:'Average of all item-level indices.', uaNote:'Share of items with universal agreement.'
+  },
+  fvi: {
+    key:'fvi', title:'Face Validity Index Calculator', short:'FVI', itemIndexShort:'I-FVI',
+    scaleAve:'S-FVI/Ave', scaleUA:'S-FVI/UA', eyebrow:'Clarity & comprehensibility',
+    lede:"Enter an expert (or target-population) panel's clarity ratings to get I-FVI, S-FVI/Ave, S-FVI/UA, and modified kappa \u2014 using the same Lynn (1986) / Polit & Beck (2006) thresholds.",
+    itemColHead:'Item (wording)',
+    ratingLabels:{1:'Not clear',2:'Somewhat clear',3:'Quite clear',4:'Highly clear'},
+    aveNote:'Average of all item-level indices.', uaNote:'Share of items with universal agreement.'
+  }
+};
+
+const RATING_BG = {'':'#FFFFFF','1':'#EAF3F5','2':'#C7E3E8','3':'#7FBFC9','4':'#0C7C92'};
+const RATING_FG = {'':'#9AA6B8','1':'#14213D','2':'#14213D','3':'#0B2430','4':'#FFFFFF'};
+
+let state = {
+  mode:'cvi',
+  experts:['Expert 1','Expert 2','Expert 3','Expert 4','Expert 5'],
+  items:[
+    {label:'Item 1', ratings:[null,null,null,null,null]},
+    {label:'Item 2', ratings:[null,null,null,null,null]},
+    {label:'Item 3', ratings:[null,null,null,null,null]},
+    {label:'Item 4', ratings:[null,null,null,null,null]},
+    {label:'Item 5', ratings:[null,null,null,null,null]},
+    {label:'Item 6', ratings:[null,null,null,null,null]},
+    {label:'Item 7', ratings:[null,null,null,null,null]},
+    {label:'Item 8', ratings:[null,null,null,null,null]}
+  ]
+};
+
+function combination(n,k){
+  if(k<0||k>n) return 0;
+  k = Math.min(k,n-k);
+  let result = 1;
+  for(let i=0;i<k;i++){ result = result*(n-i)/(i+1); }
+  return result;
+}
+
+function itemStats(item){
+  const ratings = item.ratings.filter(r=>r!==null && r!==undefined && r!=='');
+  const N = ratings.length;
+  const A = ratings.filter(r=>Number(r)>=3).length;
+  if(N===0) return {N:0,A:0,ICVI:null,Pc:null,Kappa:null};
+  const ICVI = A/N;
+  const Pc = combination(N,A)*Math.pow(0.5,N);
+  const Kappa = Pc<1 ? (ICVI-Pc)/(1-Pc) : null;
+  return {N,A,ICVI,Pc,Kappa};
+}
+
+function icviThreshold(N){
+  if(!N || N<1) return {value:null, rule:'\u2014'};
+  if(N===1) return {value:1.00, rule:'N=1 (below recommended minimum of 2 experts)'};
+  if(N===2) return {value:0.80, rule:'N=2 (Davis, 1992)'};
+  if(N>=3 && N<=5) return {value:1.00, rule:'N=3\u20135 (Polit & Beck, 2006)'};
+  if(N>=6 && N<=8) return {value:0.83, rule:'N=6\u20138 (Lynn, 1986)'};
+  return {value:0.78, rule:'N\u22659 (Lynn, 1986)'};
+}
+
+function kappaVerdict(k){
+  if(k===null || Number.isNaN(k)) return {label:'\u2014', tone:'muted'};
+  if(k>0.74) return {label:'Excellent', tone:'good'};
+  if(k>=0.60) return {label:'Good', tone:'good'};
+  if(k>=0.40) return {label:'Fair', tone:'warn'};
+  return {label:'Poor', tone:'poor'};
+}
+
+function itemVerdict(ICVI,N){
+  if(ICVI===null) return {label:'Unrated', tone:'muted'};
+  const t = icviThreshold(N);
+  if(t.value===null) return {label:'Unrated', tone:'muted'};
+  return ICVI>=t.value ? {label:'Retain', tone:'good'} : {label:'Below threshold', tone:'poor'};
+}
+
+function scaleStats(){
+  const stats = state.items.map(itemStats).filter(s=>s.ICVI!==null);
+  if(stats.length===0) return {SCVIAve:null, SCVIUA:null, n:0, total:state.items.length};
+  const SCVIAve = stats.reduce((sum,s)=>sum+s.ICVI,0)/stats.length;
+  const ua = stats.filter(s=>s.ICVI===1).length;
+  const SCVIUA = ua/stats.length;
+  return {SCVIAve, SCVIUA, n:stats.length, total:state.items.length};
+}
+
+function escapeAttr(str){
+  return String(str==null?'':str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function setMode(m){ state.mode = m; render(); }
+
+function setRating(r,i,value){
+  state.items[r].ratings[i] = value==='' ? null : Number(value);
+  render();
+}
+function renameExpert(i,value){ state.experts[i] = value || ('Expert '+(i+1)); render(); }
+function renameItem(r,value){ state.items[r].label = value || ('Item '+(r+1)); render(); }
+
+function addExpert(){
+  state.experts.push('Expert '+(state.experts.length+1));
+  state.items.forEach(it=>it.ratings.push(null));
+  render();
+}
+function removeExpert(i){
+  if(state.experts.length<=2){ alert('At least 2 experts are required.'); return; }
+  state.experts.splice(i,1);
+  state.items.forEach(it=>it.ratings.splice(i,1));
+  render();
+}
+function addItem(){
+  state.items.push({label:'Item '+(state.items.length+1), ratings:state.experts.map(()=>null)});
+  render();
+}
+function removeItem(r){
+  if(state.items.length<=1){ alert('At least 1 item is required.'); return; }
+  state.items.splice(r,1);
+  render();
+}
+
+function hasData(){ return state.items.some(it=>it.ratings.some(r=>r!==null)); }
+
+function loadSample(){
+  if(hasData() && !confirm('Load sample data? This will replace your current entries.')) return;
+  state.experts = ['Expert 1','Expert 2','Expert 3','Expert 4','Expert 5'];
+  state.items = [
+    {label:'The item is worded clearly and unambiguously.', ratings:[4,4,4,4,4]},
+    {label:'The item reflects a single, distinct concept.', ratings:[4,3,4,4,3]},
+    {label:'The item is relevant to the construct being measured.', ratings:[4,4,3,4,4]},
+    {label:'The response options are appropriate for this item.', ratings:[3,3,4,3,4]},
+    {label:'The item avoids leading or biased phrasing.', ratings:[4,4,4,3,4]},
+    {label:'The item is free of jargon inappropriate for the target population.', ratings:[2,3,3,2,3]},
+    {label:'The item length is appropriate for the response format.', ratings:[4,4,4,4,3]},
+    {label:'The item does not overlap in content with other items.', ratings:[3,2,4,3,3]}
+  ];
+  render();
+}
+
+function resetAll(){
+  if(!confirm('Clear all entered ratings? Experts and items will be kept.')) return;
+  state.items.forEach(it=>{ it.ratings = it.ratings.map(()=>null); });
+  render();
+}
+
+function renderLegend(){
+  const L = LABELS[state.mode];
+  const el = document.getElementById('legend');
+  el.innerHTML = Object.keys(L.ratingLabels).map(k=>
+    `<span><span class="dot" style="background:${RATING_BG[k]}"></span>${k} \u2013 ${L.ratingLabels[k]}</span>`
+  ).join('');
+}
+
+function renderTable(){
+  const L = LABELS[state.mode];
+  let thead = '<thead><tr><th class="item-head">'+L.itemColHead+'</th>';
+  state.experts.forEach((name,i)=>{
+    thead += `<th><div class="expert-head-inner">
+      <input class="expert-input" value="${escapeAttr(name)}" onchange="renameExpert(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()" aria-label="Expert ${i+1} name">
+      <button class="icon-x" onclick="removeExpert(${i})" aria-label="Remove expert ${i+1}">&times;</button>
+    </div></th>`;
+  });
+  thead += `<th>Agree</th><th>${L.itemIndexShort}</th><th>&kappa;</th><th>Verdict</th></tr></thead>`;
+
+  let tbody = '<tbody>';
+  state.items.forEach((item,r)=>{
+    const s = itemStats(item);
+    const iv = itemVerdict(s.ICVI,s.N);
+    const kv = kappaVerdict(s.Kappa);
+    tbody += `<tr><td class="item-cell"><div class="item-row-inner">
+      <input class="item-input" value="${escapeAttr(item.label)}" onchange="renameItem(${r},this.value)" onkeydown="if(event.key==='Enter')this.blur()" aria-label="Item ${r+1} text">
+      <button class="icon-x" onclick="removeItem(${r})" aria-label="Remove item ${r+1}">&times;</button>
+    </div></td>`;
+    item.ratings.forEach((val,i)=>{
+      const v = val===null||val===undefined ? '' : String(val);
+      tbody += `<td><select class="rating-select" style="background:${RATING_BG[v]};color:${RATING_FG[v]}" onchange="setRating(${r},${i},this.value)" aria-label="Rating">
+        <option value=""${v===''?' selected':''}>&ndash;</option>
+        <option value="1"${v==='1'?' selected':''}>1</option>
+        <option value="2"${v==='2'?' selected':''}>2</option>
+        <option value="3"${v==='3'?' selected':''}>3</option>
+        <option value="4"${v==='4'?' selected':''}>4</option>
+      </select></td>`;
+    });
+    tbody += `<td class="mono">${s.N?`${s.A}/${s.N}`:'\u2014'}</td>`;
+    tbody += `<td class="icvi-cell mono">${s.ICVI===null?'\u2014':s.ICVI.toFixed(2)}</td>`;
+    tbody += `<td class="mono">${s.Kappa===null?'\u2014':s.Kappa.toFixed(2)}</td>`;
+    tbody += `<td><span class="badge ${iv.tone}">${iv.label}</span></td></tr>`;
+  });
+  tbody += '</tbody>';
+
+  document.getElementById('matrixTable').innerHTML = thead+tbody;
+}
+
+function renderResults(){
+  const L = LABELS[state.mode];
+  const sc = scaleStats();
+  document.getElementById('aveLabel').textContent = L.scaleAve;
+  document.getElementById('uaLabel').textContent = L.scaleUA;
+  document.getElementById('aveValue').textContent = sc.SCVIAve===null ? '\u2014' : sc.SCVIAve.toFixed(2);
+  document.getElementById('uaValue').textContent = sc.SCVIUA===null ? '\u2014' : sc.SCVIUA.toFixed(2);
+
+  const aveNote = document.getElementById('aveNote');
+  const uaNote = document.getElementById('uaNote');
+  if(sc.SCVIAve===null){
+    aveNote.textContent = L.aveNote;
+  } else {
+    aveNote.textContent = (sc.SCVIAve>=0.90?'Acceptable':'Below threshold')+' (\u2265 0.90) \u00b7 '+sc.n+' of '+sc.total+' items rated';
+  }
+  if(sc.SCVIUA===null){
+    uaNote.textContent = L.uaNote;
+  } else {
+    uaNote.textContent = (sc.SCVIUA>=0.80?'Acceptable':'Below threshold')+' (\u2265 0.80) \u00b7 '+sc.n+' of '+sc.total+' items rated';
+  }
+
+  document.getElementById('infoExperts').textContent = state.experts.length;
+  document.getElementById('infoItems').textContent = state.items.length;
+  document.getElementById('infoThreshLabel').textContent = L.itemIndexShort+' threshold';
+  const t = icviThreshold(state.experts.length);
+  document.getElementById('infoThresh').textContent = t.value===null ? '\u2014' : ('\u2265 '+t.value.toFixed(2));
+}
+
+function renderHeader(){
+  const L = LABELS[state.mode];
+  document.getElementById('eyebrow').textContent = L.eyebrow;
+  document.getElementById('heroTitle').textContent = L.title;
+  document.getElementById('heroLede').textContent = L.lede;
+  document.getElementById('modeCviBtn').classList.toggle('active', state.mode==='cvi');
+  document.getElementById('modeFviBtn').classList.toggle('active', state.mode==='fvi');
+  document.title = L.title;
+}
+
+function render(){
+  renderHeader();
+  renderLegend();
+  renderTable();
+  renderResults();
+}
+
+function csvEscape(val){
+  const s = String(val==null?'':val);
+  if(s.includes(',')||s.includes('"')||s.includes('\n')) return '"'+s.replace(/"/g,'""')+'"';
+  return s;
+}
+
+function exportCSV(){
+  const L = LABELS[state.mode];
+  const N = state.experts.length;
+  const th = icviThreshold(N);
+  const rows = [];
+  rows.push([L.title+' \u2014 Report']);
+  rows.push(['Generated', new Date().toISOString().slice(0,10)]);
+  rows.push(['Expert panel size', N]);
+  rows.push([L.itemIndexShort+' threshold for this panel size', th.value===null?'':('>= '+th.value.toFixed(2)+' ('+th.rule+')')]);
+  rows.push([]);
+  rows.push(['Item', ...state.experts, 'N Rated', 'N Agree', L.itemIndexShort, 'Pc', 'Modified Kappa', 'Kappa Verdict', L.itemIndexShort+' Verdict']);
+  state.items.forEach(item=>{
+    const s = itemStats(item);
+    const iv = itemVerdict(s.ICVI,s.N);
+    const kv = kappaVerdict(s.Kappa);
+    rows.push([
+      item.label,
+      ...item.ratings.map(r=>r===null?'':r),
+      s.N, s.A,
+      s.ICVI===null?'':s.ICVI.toFixed(2),
+      s.Pc===null?'':s.Pc.toFixed(3),
+      s.Kappa===null?'':s.Kappa.toFixed(2),
+      kv.label, iv.label
+    ]);
+  });
+  rows.push([]);
+  const sc = scaleStats();
+  rows.push([L.scaleAve, sc.SCVIAve===null?'':sc.SCVIAve.toFixed(2), sc.SCVIAve!==null && sc.SCVIAve>=0.90 ? 'Acceptable (>=0.90)' : 'Below threshold (>=0.90)']);
+  rows.push([L.scaleUA, sc.SCVIUA===null?'':sc.SCVIUA.toFixed(2), sc.SCVIUA!==null && sc.SCVIUA>=0.80 ? 'Acceptable (>=0.80)' : 'Below threshold (>=0.80)']);
+
+  const csv = rows.map(r=>r.map(csvEscape).join(',')).join('\n');
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = L.short.toLowerCase()+'-report-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function printReport(){ window.print(); }
+
+window.addEventListener('beforeprint', ()=>{
+  document.querySelectorAll('details').forEach(d=>{ d.open = true; });
+});
+
+render();
+</script>
+</body>
+</html>
