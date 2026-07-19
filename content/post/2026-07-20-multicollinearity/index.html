@@ -1,0 +1,77 @@
+---
+title: "Multicollinearity Explained: Why Correlated Predictors Confuse Your Model"
+authors:
+  - Ahmed Azeez
+date: '2026-07-20'
+slug: multicollinearity-explained
+categories:
+  - post
+tags:
+  - statistics
+  - regression
+  - research methods
+description: 'Multicollinearity happens when independent variables in a regression model are too closely related. This guide explains what it is, why it matters, and how to detect and fix it.'
+thumbnail: 'thumbnail.png'
+image: 'Overlapping_Circles.png'
+imageAlt: 'Diagram showing two overlapping circles representing correlated predictor variables'
+imageCredit: 'AI'
+imageCreditLink: ''
+disqus: 'true'
+---
+
+<p><strong>Multicollinearity</strong> occurs when two or more independent variables in a regression model are highly correlated with one another. At first glance this may not seem like a problem — after all, if two variables are related, shouldn't they both help explain the outcome? The issue is that the model struggles to tell which variable is actually responsible for the observed association.</p>
+
+<p><img src="Overlapping_Circles.png" alt="Diagram showing two overlapping circles representing correlated predictor variables" /></p>
+
+<hr />
+
+<div id="the-problem" class="section level2">
+<h2>The Problem: Two Variables, One Signal</h2>
+<p>Imagine trying to determine whether <strong>income</strong> or <strong>wealth</strong> has a stronger relationship with a health outcome. Since the two are closely related, the model finds it difficult to separate their individual contributions.</p>
+<p>As a result:</p>
+<ul>
+  <li><strong>Regression coefficients</strong> become unstable.</li>
+  <li><strong>Standard errors</strong> increase.</li>
+  <li><strong>Confidence intervals</strong> become wider.</li>
+  <li>Variables that may genuinely be associated with the outcome can appear <strong>statistically non-significant</strong>.</li>
+</ul>
+<p><img src="Wide_vs_Narrow_CI.png" alt="Comparison chart showing wide versus narrow confidence intervals" /></p>
+</div>
+
+<hr />
+
+<div id="prediction-vs-interpretation" class="section level2">
+<h2>Prediction vs. Interpretation</h2>
+<p>Multicollinearity doesn't necessarily reduce the model's ability to make <strong>predictions</strong>. What it affects is our <strong>confidence in interpreting the individual regression coefficients</strong>. A model can still fit the data well while the story it tells about any single predictor becomes unreliable.</p>
+</div>
+
+<hr />
+
+<div id="detection" class="section level2">
+<h2>How Researchers Detect It</h2>
+<ul>
+  <li><strong>Variance Inflation Factor (VIF):</strong> the most commonly used diagnostic. Higher values signal greater redundancy between predictors.</li>
+  <li><strong>Correlation matrix:</strong> checking correlations between predictor variables before building the model is a useful first step.</li>
+</ul>
+<p><img src="VIF_Indicator_Scale.png" alt="Gauge showing low, moderate, and high Variance Inflation Factor zones" /></p>
+</div>
+
+<hr />
+
+<div id="solutions" class="section level2">
+<h2>What To Do About It</h2>
+<p>If multicollinearity is identified, researchers may decide to:</p>
+<ul>
+  <li><strong>Remove</strong> one of the correlated variables.</li>
+  <li><strong>Combine</strong> them into a single composite measure.</li>
+  <li><strong>Use other modelling approaches</strong>, depending on the research question.</li>
+</ul>
+</div>
+
+<hr />
+
+<div id="the-bottom-line" class="section level2">
+<h2>💡 The Bottom Line</h2>
+<p>Regression models don't just require the right statistical test — they also require the <strong>right variables</strong>. Before interpreting individual coefficients, ask yourself whether your predictors are measuring <strong>distinct concepts</strong> or simply different versions of the same thing.</p>
+<p><em>Check your correlations. Compute your VIF. Interpret with care.</em></p>
+</div>
