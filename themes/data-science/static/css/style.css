@@ -246,3 +246,19 @@ code{ background-color: var(--codeBG); padding: 2px 5px; color: var(--codeFont);
 #app-iframe { display: block; background: white; }
 #back-to-apps { padding: 5px 10px; font-size: 13px; }
 #back-to-apps svg { width: 14px; height: 14px; margin-right: 5px; }
+
+/* Copy Link Styles */
+.app-card__actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
+.app-card__copy-btn { background: transparent; border: none; color: var(--accent); cursor: pointer; padding: 5px; border-radius: var(--radius); transition: var(--fastFade); display: flex; align-items: center; justify-content: center; opacity: 0.6; }
+.app-card__copy-btn:hover { opacity: 1; background-color: var(--elevation); color: var(--content); }
+.app-card__copy-btn svg { width: 14px; height: 14px; }
+
+.copy-btn { margin-left: 15px; display: flex; align-items: center; gap: 5px; color: var(--accent); }
+.copy-btn:hover { color: var(--content); }
+.copy-btn svg { width: 14px; height: 14px; }
+.copy-btn span { font-size: 12px; font-weight: bold; }
+
+@media(max-width: 600px) {
+  .copy-btn span { display: none; }
+  .copy-btn { margin-left: 5px; }
+}

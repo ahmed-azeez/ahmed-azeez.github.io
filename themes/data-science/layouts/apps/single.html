@@ -17,6 +17,10 @@
         </button>
         <span class="breadcrumb-separator">/</span>
         <span id="current-app-name" class="breadcrumb-current"></span>
+        <button id="copy-current-app-link" class="btn btn-sm btn-ghost copy-btn" title="Copy link to this app">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <span>Copy Link</span>
+        </button>
       </div>
     </section>
 
@@ -35,7 +39,7 @@
             {{ if (findRE "stats" .Name) }} {{ $icon = "bar-chart" }} {{ end }}
             {{ if (findRE "data" .Name) }} {{ $icon = "database" }} {{ end }}
             
-            <div class="app-card" data-app-url="/apps/{{ .Name }}" data-app-title="{{ $appTitle }}">
+            <div class="app-card" data-app-url="/apps/{{ .Name }}" data-app-title="{{ $appTitle }}" data-app-name="{{ $appName }}">
               <div class="app-card__icon">
                 {{ if eq $icon "calculator" }}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14"></line><line x1="16" y1="18" x2="16" y2="18"></line><line x1="12" y1="14" x2="12" y2="14"></line><line x1="12" y1="18" x2="12" y2="18"></line><line x1="8" y1="14" x2="8" y2="14"></line><line x1="8" y1="18" x2="8" y2="18"></line></svg>
@@ -49,7 +53,12 @@
               </div>
               <div class="app-card__body">
                 <h4 class="app-card__title">{{ $appTitle }}</h4>
-                <p class="app-card__desc">Open App</p>
+                <div class="app-card__actions">
+                  <span class="app-card__desc">Open App</span>
+                  <button class="app-card__copy-btn" data-app-name="{{ $appName }}" title="Copy link to this app">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                  </button>
+                </div>
               </div>
             </div>
           {{ end }}
@@ -77,12 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const appBreadcrumb = document.getElementById('app-breadcrumb');
   const currentAppName = document.getElementById('current-app-name');
   const backBtn = document.getElementById('back-to-apps');
+  const copyCurrentBtn = document.getElementById('copy-current-app-link');
 
-  // Handle app card clicks
-  document.querySelectorAll('.app-card').forEach(card => {
-    card.addEventListener('click', function() {
-      const url = this.getAttribute('data-app-url');
-      const title = this.getAttribute('data-app-title');
+  function openApp(appName, updateHash = true) {
+    const card = document.querySelector(`.app-card[data-app-name="${appName}"]`);
+    if (card) {
+      const url = card.getAttribute('data-app-url');
+      const title = card.getAttribute('data-app-title');
       
       appIframe.src = url;
       currentAppName.textContent = title;
@@ -93,22 +103,97 @@ document.addEventListener('DOMContentLoaded', function() {
       appViewerSection.style.display = 'block';
       appBreadcrumb.style.display = 'flex';
       
+      if (updateHash) {
+        window.location.hash = appName;
+      }
       window.scrollTo(0, 0);
-    });
-  });
+    }
+  }
 
-  // Handle back button click
-  backBtn.addEventListener('click', function() {
+  function closeApp(updateHash = true) {
     appIframe.src = '';
-    
     appViewerSection.style.display = 'none';
     appBreadcrumb.style.display = 'none';
-    
     appsListSection.style.display = 'block';
     appHeaderTitle.style.display = 'block';
     
+    if (updateHash) {
+      history.pushState("", document.title, window.location.pathname + window.location.search);
+    }
     window.scrollTo(0, 0);
+  }
+
+  function copyLink(appName, btn) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const fullUrl = baseUrl + '#' + appName;
+    
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      const originalContent = btn.innerHTML;
+      if (btn.classList.contains('copy-btn')) {
+        btn.querySelector('span').textContent = 'Copied!';
+      } else {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      }
+      
+      setTimeout(() => {
+        btn.innerHTML = originalContent;
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  }
+
+  // Handle app card clicks
+  document.querySelectorAll('.app-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Don't open if copy button was clicked
+      if (e.target.closest('.app-card__copy-btn')) return;
+      
+      const appName = this.getAttribute('data-app-name');
+      openApp(appName);
+    });
   });
+
+  // Handle individual copy buttons on cards
+  document.querySelectorAll('.app-card__copy-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const appName = this.getAttribute('data-app-name');
+      copyLink(appName, this);
+    });
+  });
+
+  // Handle current app copy button
+  if (copyCurrentBtn) {
+    copyCurrentBtn.addEventListener('click', function() {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        copyLink(hash, this);
+      }
+    });
+  }
+
+  // Handle back button click
+  backBtn.addEventListener('click', function() {
+    closeApp();
+  });
+
+  // Handle hash changes for navigation
+  window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      openApp(hash, false);
+    } else {
+      closeApp(false);
+    }
+  });
+
+  // Initial check on load
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash) {
+    // Small delay to ensure all elements are ready
+    setTimeout(() => openApp(initialHash, false), 100);
+  }
 });
 </script>
 
