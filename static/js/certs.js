@@ -71,16 +71,20 @@ function renderGallery(certs) {
 
     const isPdf = cert.image_url.toLowerCase().endsWith('.pdf');
     
-    const cardLink = document.createElement("a");
+    const cardLink = document.createElement("div");
     cardLink.className = "cert-card__image-link";
-    cardLink.href = cert.image_url;
-    cardLink.target = "_blank";
-    cardLink.rel = "noopener";
+    cardLink.style.cursor = "pointer";
+    cardLink.onclick = () => openCertModal(cert);
 
     const overlay = document.createElement("div");
     overlay.className = "cert-card__pdf-overlay";
     overlay.textContent = isPdf ? "View PDF" : "View Image";
     cardLink.appendChild(overlay);
+
+    // Protection layer to prevent right-click/drag
+    const protection = document.createElement("div");
+    protection.className = "cert-protection-overlay";
+    cardLink.appendChild(protection);
 
     if (isPdf) {
       const canvas = document.createElement("canvas");
@@ -261,6 +265,64 @@ async function handleDelete(e) {
 
   loadCerts();
 }
+
+// ---------- Protection & Modal ----------
+
+function openCertModal(cert) {
+  const modal = document.createElement("div");
+  modal.className = "cert-modal";
+  
+  const content = document.createElement("div");
+  content.className = "cert-modal__content";
+  
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "cert-modal__close";
+  closeBtn.innerHTML = "&times;";
+  closeBtn.onclick = () => document.body.removeChild(modal);
+  content.appendChild(closeBtn);
+
+  const protection = document.createElement("div");
+  protection.className = "cert-modal__protection";
+  content.appendChild(protection);
+
+  const isPdf = cert.image_url.toLowerCase().endsWith('.pdf');
+  if (isPdf) {
+    const canvas = document.createElement("canvas");
+    canvas.className = "cert-modal__canvas";
+    content.appendChild(canvas);
+    generatePdfPreview(cert.image_url, canvas);
+  } else {
+    const img = document.createElement("img");
+    img.className = "cert-modal__img";
+    img.src = cert.image_url;
+    img.alt = cert.title;
+    content.appendChild(img);
+  }
+
+  modal.appendChild(content);
+  modal.onclick = (e) => {
+    if (e.target === modal) document.body.removeChild(modal);
+  };
+  document.body.appendChild(modal);
+}
+
+// Disable right-click and common shortcuts on the certificates section
+document.addEventListener('contextmenu', (e) => {
+  if (e.target.closest('.certs-section') || e.target.closest('.cert-modal')) {
+    e.preventDefault();
+    return false;
+  }
+}, false);
+
+document.addEventListener('keydown', (e) => {
+  // Prevent Ctrl+S, Ctrl+P, Ctrl+U (view source), etc.
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'p' || e.key === 'u')) {
+    if (document.querySelector('.certs-section') || document.querySelector('.cert-modal')) {
+      e.preventDefault();
+      return false;
+    }
+  }
+});
 
 // ---------- Init ----------
 
