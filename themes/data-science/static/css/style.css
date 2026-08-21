@@ -1420,3 +1420,195 @@ footer{
     height: 100%;
     z-index: 11;
 }
+
+
+/* Multi-page certificate viewer controls */
+.cert-modal__viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cert-modal__controls {
+  position: relative;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #d1e8f2;
+  border-radius: 4px;
+  color: #164a63;
+  font-family: var(--bodyFont);
+  box-sizing: border-box;
+}
+
+.cert-modal__page-button {
+  padding: 6px 12px;
+  border: 1px solid #78bfdc;
+  border-radius: 4px;
+  background: #b9e3f5;
+  color: #164a63;
+  font-family: var(--bodyFont);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.cert-modal__page-button:hover:not(:disabled) {
+  background: #8fd0ea;
+  color: #10384b;
+}
+
+.cert-modal__page-button:disabled {
+  background: #d8eaf2;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cert-modal__page-indicator {
+  min-width: 110px;
+  color: #164a63;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cert-modal__canvas {
+  max-width: 100%;
+  max-height: 72vh;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cert-modal__viewer,
+.cert-modal__controls,
+.cert-modal__page-button,
+.cert-modal__page-indicator,
+.cert-modal__close {
+  user-select: none;
+}
+
+.cert-modal__protection {
+  pointer-events: none;
+}
+
+.cert-modal__controls,
+.cert-modal__close {
+  pointer-events: auto;
+}
+
+.cert-modal__controls button {
+  pointer-events: auto;
+}
+
+.cert-modal__close {
+  z-index: 12;
+}
+
+@media (max-width: 600px) {
+  .cert-modal__controls {
+    gap: 8px;
+  }
+
+  .cert-modal__page-button {
+    padding: 5px 9px;
+    font-size: 0.8rem;
+  }
+
+  .cert-modal__page-indicator {
+    min-width: 90px;
+    font-size: 0.8rem;
+  }
+}
+
+@media print {
+  .cert-modal,
+  .certs-section {
+    display: none !important;
+  }
+}
+
+.cert-modal__page-button:focus-visible,
+.cert-modal__close:focus-visible {
+  outline: 2px solid #164a63;
+  outline-offset: 2px;
+}
+
+.cert-modal__page-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.cert-modal__page-button,
+.cert-modal__close {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+}
+
+.cert-modal__viewer {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.cert-modal__content {
+  overflow: visible;
+}
+
+.cert-modal__viewer .cert-modal__canvas {
+  display: block;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.18);
+}
+
+.cert-modal__controls {
+  flex-shrink: 0;
+}
+
+.cert-modal__page-button {
+  min-width: 70px;
+}
+
+.cert-modal__page-indicator {
+  flex: 0 0 auto;
+}
+
+.cert-modal__close {
+  position: absolute;
+}
+
+.cert-modal__content {
+  position: relative;
+}
+
+.cert-modal__protection {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.cert-modal__viewer {
+  position: relative;
+  z-index: 1;
+}
+
+.cert-modal__controls {
+  position: relative;
+  z-index: 12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cert-modal__page-button {
+    transition: none;
+  }
+}

@@ -31,22 +31,25 @@ async function generatePdfPreview(url, canvas) {
   try {
     const loadingTask = pdfjsLib.getDocument(url);
     const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    
-    const viewport = page.getViewport({ scale: 1.5 });
-    const context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const renderContext = {
-      canvasContext: context,
-      viewport: viewport
-    };
-    await page.render(renderContext).promise;
+    await renderPdfPage(pdf, 1, canvas, 1.5);
   } catch (error) {
     console.error('Error generating PDF preview:', error);
     // If preview fails, we could show a placeholder or just leave it blank
   }
+}
+
+async function renderPdfPage(pdf, pageNumber, canvas, scale = 1.5) {
+  const page = await pdf.getPage(pageNumber);
+  const viewport = page.getViewport({ scale });
+  const context = canvas.getContext('2d');
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  await page.render({
+    canvasContext: context,
+    viewport
+  }).promise;
 }
 
 function renderGallery(certs) {
@@ -271,26 +274,95 @@ async function handleDelete(e) {
 function openCertModal(cert) {
   const modal = document.createElement("div");
   modal.className = "cert-modal";
-  
+
   const content = document.createElement("div");
   content.className = "cert-modal__content";
-  
+
+  const closeModal = () => {
+    if (modal.parentNode) {
+      document.body.removeChild(modal);
+    }
+    document.removeEventListener("keydown", handleEscape);
+  };
+
+  const handleEscape = (event) => {
+    if (event.key === "Escape") closeModal();
+  };
+
   const closeBtn = document.createElement("button");
   closeBtn.className = "cert-modal__close";
+  closeBtn.type = "button";
+  closeBtn.setAttribute("aria-label", "Close certificate viewer");
   closeBtn.innerHTML = "&times;";
-  closeBtn.onclick = () => document.body.removeChild(modal);
+  closeBtn.onclick = closeModal;
   content.appendChild(closeBtn);
-
-  const protection = document.createElement("div");
-  protection.className = "cert-modal__protection";
-  content.appendChild(protection);
 
   const isPdf = cert.image_url.toLowerCase().endsWith('.pdf');
   if (isPdf) {
+    const viewer = document.createElement("div");
+    viewer.className = "cert-modal__viewer";
+
     const canvas = document.createElement("canvas");
     canvas.className = "cert-modal__canvas";
-    content.appendChild(canvas);
-    generatePdfPreview(cert.image_url, canvas);
+    viewer.appendChild(canvas);
+
+    const controls = document.createElement("div");
+    controls.className = "cert-modal__controls";
+
+    const previousBtn = document.createElement("button");
+    previousBtn.type = "button";
+    previousBtn.className = "cert-modal__page-button";
+    previousBtn.textContent = "Previous";
+    previousBtn.disabled = true;
+
+    const pageIndicator = document.createElement("span");
+    pageIndicator.className = "cert-modal__page-indicator";
+    pageIndicator.textContent = "Loading PDF…";
+    pageIndicator.setAttribute("aria-live", "polite");
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.className = "cert-modal__page-button";
+    nextBtn.textContent = "Next";
+    nextBtn.disabled = true;
+
+    controls.appendChild(previousBtn);
+    controls.appendChild(pageIndicator);
+    controls.appendChild(nextBtn);
+    viewer.appendChild(controls);
+    content.appendChild(viewer);
+
+    let pdf = null;
+    let currentPage = 1;
+
+    const updatePage = async (pageNumber) => {
+      if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return;
+
+      currentPage = pageNumber;
+      previousBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === pdf.numPages;
+      pageIndicator.textContent = `Page ${currentPage} of ${pdf.numPages}`;
+
+      try {
+        await renderPdfPage(pdf, currentPage, canvas, 1.5);
+      } catch (error) {
+        console.error("Error rendering certificate page:", error);
+        pageIndicator.textContent = "Unable to display this page.";
+      }
+    };
+
+    previousBtn.onclick = () => updatePage(currentPage - 1);
+    nextBtn.onclick = () => updatePage(currentPage + 1);
+
+    pdfjsLib.getDocument(cert.image_url).promise
+      .then((loadedPdf) => {
+        pdf = loadedPdf;
+        updatePage(1);
+      })
+      .catch((error) => {
+        console.error("Error loading certificate PDF:", error);
+        pageIndicator.textContent = "Unable to load this certificate.";
+      });
   } else {
     const img = document.createElement("img");
     img.className = "cert-modal__img";
@@ -299,11 +371,16 @@ function openCertModal(cert) {
     content.appendChild(img);
   }
 
+  const protection = document.createElement("div");
+  protection.className = "cert-modal__protection";
+  content.appendChild(protection);
+
   modal.appendChild(content);
   modal.onclick = (e) => {
-    if (e.target === modal) document.body.removeChild(modal);
+    if (e.target === modal) closeModal();
   };
   document.body.appendChild(modal);
+  document.addEventListener("keydown", handleEscape);
 }
 
 // Disable right-click and common shortcuts on the certificates section
