@@ -12,14 +12,14 @@
       </div>
 
       <div class="filters-tags">
-        <button class='filters-click' aria-label="Filter posts by tag" aria-expanded="false">
+        <button type="button" class='filters-click' aria-label="Open tag filters" aria-expanded="false" aria-controls="tag-filter-drawer">
           <p class='tags-meta'>Filters</p>
           {{ partial "icon.html" "chevron-down" }}
           {{ partial "icon.html" "chevron-up" }}
         </button>
         <div class='filters-selected'>
         {{ range $key, $value := .Site.Taxonomies.tags }}
-          <button class='item__meta-tag tag-selected' hidden="true" data-tag="{{ $key }}" aria-pressed="true" aria-label="Filter by posts tagged {{ $key }}">
+          <button type="button" class='item__meta-tag tag-selected' hidden="true" data-tag="{{ $key }}" aria-pressed="true" aria-label="Remove {{ $key }} tag filter">
             <p class="tag-text">
               {{ $key }}
             </p>
@@ -48,7 +48,7 @@
           </a>
         </div>
 
-        <button class="theme-toggle" aria-label="Enable Dark Mode">
+        <button type="button" class="theme-toggle" aria-label="Enable Dark Mode" aria-pressed="false">
           {{ partial "icon.html" "moon" }}
           {{ partial "icon.html" "sun" }}
           <!--<i class="far fa-moon"></i>-->
@@ -57,13 +57,13 @@
     </div>
   </div>
 
-  <div class='filters-drawer' hidden>
+  <div id="tag-filter-drawer" class='filters-drawer' hidden aria-label="Tag filters">
 
     <div class='drawer-contents'>
       <div class='drawer-gradient'></div>
       <div class='drawer-tags'>
       {{ range $key, $value := .Site.Taxonomies.tags }}
-        <button class='item__meta-tag drawer-tag' data-drawertag="{{ $key }}" aria-pressed="false" aria-label="Filter by posts tagged {{ $key }}">
+        <button type="button" class='item__meta-tag drawer-tag' data-drawertag="{{ $key }}" aria-pressed="false" aria-label="Filter posts by {{ $key }} tag">
           <p class="tag-text drawer-tag">
             {{ $key }}
           </p>
@@ -89,9 +89,9 @@
         <div class="item {{ range .Params.categories }}{{ . }}{{ end }}" data-tags="{{ with .Params.tags }}{{ delimit . ", "}}{{ end }}">
           <a class="item__link" href="{{ .Permalink }}">
             {{ if .Params.thumbnail }}
-              <img class="item__image" src="{{ .RelPermalink }}{{ .Params.thumbnail }}" alt="{{ .Params.imageAlt }}" class="img-responsive">
+              <img class="item__image" src="{{ .RelPermalink }}{{ .Params.thumbnail }}" alt="{{ with .Params.imageAlt }}{{ . }}{{ else }}Thumbnail for {{ .Title }}{{ end }}" loading="lazy" width="640" height="360">
             {{else if .Params.image}}
-              <img class="item__image" src="{{ .RelPermalink }}{{ .Params.image }}" alt="{{ .Params.imageAlt }}" class="img-responsive">
+              <img class="item__image" src="{{ .RelPermalink }}{{ .Params.image }}" alt="{{ with .Params.imageAlt }}{{ . }}{{ else }}Featured image for {{ .Title }}{{ end }}" loading="lazy" width="640" height="360">
             {{end}}
             <div class="item__details">
               {{ range .Params.categories }}

@@ -1,4 +1,4 @@
-let filterDrawerOpen = false;
+let filterDrawerOpen = false
 let filterButton = document.getElementsByClassName('filters-click')[0]
 let filterDrawer = document.getElementsByClassName('filters-drawer')[0]
 let chevronUp = document.getElementsByClassName('inline-svg-chevron-up')[0]
@@ -228,7 +228,8 @@ function handleSinglePageTag(){
 function handleFilterDrawer(){
 
   filterDrawerOpen = !filterDrawerOpen
-  filterButton.setAttribute('aria-expanded', filterDrawerOpen)
+  filterButton.setAttribute('aria-expanded', String(filterDrawerOpen))
+  filterDrawer.setAttribute('aria-hidden', String(!filterDrawerOpen))
 
   if(filterDrawerOpen === true) {
     filterDrawer.classList.add('visible')

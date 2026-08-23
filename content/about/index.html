@@ -4,59 +4,181 @@ type: "about"
 ---
 
 <style>
-.tldr{display: flex; flex-direction: row-reverse; flex-wrap: wrap}
-.imageCont{display: flex; flex-direction: row; flex-wrap: wrap; max-width: 100%; align-items: center; justify-content: center;  margin: 1rem 0;}
-.imageCont img {max-width: 175px; height: 100%; object-fit: cover; }
-.imageCont figure{margin: 0 5px; height: 175px;}
-.headerImg{margin: 0 0.5rem; display: flex; justify-content: center; overflow: hidden; border-radius: 50%; width: 250px; height: 240px; align-items: center; border: 4px solid var(--content); box-shadow: var(--mainShadow)}
-.tldr-text{flex: 45%; margin: 0 1rem}
-.headerImg img{width: 250px; margin: 0 auto; height: 250px; object-fit: cover; mix-blend-mode: normal}
-.cv-download {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 6px 11px;
-    background-color: #b9e3f5;
-    color: #164a63 !important;
-    text-decoration: none;
-    border: 1px solid #78bfdc;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    box-shadow: 0 2px 5px rgba(22, 74, 99, 0.18);
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+.about-page__intro {
+  margin-bottom: 1.5rem;
 }
-.cv-download:hover {
-    background-color: #8fd0ea;
-    color: #10384b !important;
-    box-shadow: 0 3px 7px rgba(22, 74, 99, 0.25);
+
+.about-page__intro p {
+  margin-bottom: 0.75rem;
+}
+
+.cv-download {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #b9e3f5;
+  color: #164a63 !important;
+  text-decoration: none;
+  border: 1px solid #5fa8c8;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(22, 74, 99, 0.18);
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cv-download:hover,
+.cv-download:focus-visible {
+  background-color: #8fd0ea;
+  color: #10384b !important;
+  box-shadow: 0 3px 7px rgba(22, 74, 99, 0.25);
+}
+
+.about-page__profile {
+  display: grid;
+  grid-template-columns: minmax(160px, 250px) 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 1.5rem 0 2rem;
+}
+
+.about-page__portrait {
+  width: 100%;
+  max-width: 250px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--content);
+  box-shadow: var(--mainShadow);
+}
+
+.about-page__profile h2,
+.about-page__section h2 {
+  margin-top: 0;
+}
+
+.about-page__section {
+  margin: 2rem 0;
+}
+
+.about-page__section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.about-page__section h3 {
+  margin-bottom: 0.35rem;
+}
+
+.about-page__section ul {
+  margin-top: 0.5rem;
+}
+
+.about-page__section li + li {
+  margin-top: 0.35rem;
+}
+
+.about-page__publication-list li {
+  margin-bottom: 0.75rem;
+}
+
+.about-page__contact {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--accent);
+  background: var(--elevationHover);
+}
+
+@media (max-width: 650px) {
+  .about-page__profile {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page__portrait {
+    margin: 0 auto;
+  }
 }
 </style>
 
-<div class="job">
-<p><strong>I am a Public Health professional with a Ph.D. in Community Medicine and Public Health, specializing in the epidemiology of infectious diseases and infectious disease modelling. Currently, I am a Lecturer at the Higher Health Institute of Wasit, Iraq. Interested in collaborating? <a href="mailto:ahmed.azeez1987@gmail.com">Drop me a line</a>.</strong></p>
-<p><a href="/cv/Ahmed_Azeez_Hasan_CV.pdf" class="cv-download" download>📄 Download my CV (PDF)</a></p>
+<div class="about-page__intro">
+  <p><strong>I am a public health professional with a Ph.D. in Community Medicine and Public Health, specialising in the epidemiology of infectious diseases and infectious disease modelling. I am currently a Lecturer at the Higher Health Institute of Wasit, Iraq.</strong></p>
+  <p>If you are interested in collaborating, <a href="mailto:ahmed.azeez1987@gmail.com">drop me a line</a>.</p>
+  <p><a href="/cv/Ahmed_Azeez_Hasan_CV.pdf" class="cv-download" download aria-label="Download Ahmed Azeez Hasan's curriculum vitae as a PDF">Download my CV (PDF)</a></p>
 </div>
 
-<div class="tldr">
-<div class="tldr-text">
-<h3 id="tldr">TL;DR</h3>
-<p>I am a dedicated public health researcher and educator with over 15 years of experience in community health and academic research. My work focuses on the epidemiology of infectious diseases, where I apply advanced quantitative methods like structural equation modelling and Item Response Theory to improve disease surveillance. Whether I am training health workers in Iraq or conducting epidemiological studies in Malaysia, my goal is to bridge the gap between complex data and practical public health solutions.</p>
-</div>
-<div class="headerImg">
-<p><img src="/images/logo.png" /></p>
-</div>
-</div>
+<section class="about-page__profile" aria-labelledby="profile-heading">
+  <div>
+    <img class="about-page__portrait" src="/images/logo.jpg" alt="Portrait of Ahmed Azeez Hasan, public health researcher and lecturer" width="250" height="250" />
+  </div>
+  <div>
+    <h2 id="profile-heading">Profile</h2>
+    <p>I am a public health researcher and educator with more than 15 years of combined experience in community health, academic research, and health-worker training. My work connects epidemiology, biostatistics, psychometrics, and community engagement to strengthen infectious disease surveillance and practical public health decision-making.</p>
+  </div>
+</section>
 
-<div id="the-long-version" class="section level3">
-<h3>The Long Version</h3>
+<section class="about-page__section" aria-labelledby="research-heading">
+  <h2 id="research-heading">Research Interests</h2>
+  <p>My research focuses on the design, measurement, and evaluation of community-based infectious disease surveillance. I am particularly interested in the following areas:</p>
+  <ul>
+    <li>Infectious disease epidemiology, surveillance, and disease modelling.</li>
+    <li>Community engagement and participation in public health surveillance.</li>
+    <li>Development, cultural adaptation, and validation of public health instruments.</li>
+    <li>Exploratory and confirmatory factor analysis, Item Response Theory, structural equation modelling, and path analysis.</li>
+    <li>Applied epidemiological methods for evidence-informed public health policy.</li>
+  </ul>
+</section>
 
-<p>My journey in public health began over a decade ago, driven by a commitment to improving community well-being through science and education. I hold a Ph.D. in Community Medicine and Public Health from Universiti Sains Malaysia, where I specialized in the epidemiology of infectious diseases. My doctoral research involved designing and conducting comprehensive cross-sectional studies on community-based infectious disease surveillance, utilizing advanced statistical methods to validate critical public health instruments.</p>
+<section class="about-page__section" aria-labelledby="academic-heading">
+  <h2 id="academic-heading">Academic Experience</h2>
+  <h3>Lecturer — Higher Health Institute of Wasit, Iraq <span aria-label="from 2025 to present">(2025–present)</span></h3>
+  <ul>
+    <li>Teach undergraduate courses in emergency health, public health, epidemiology, infectious disease surveillance, and research methods.</li>
+    <li>Supervise student research, provide academic mentoring, and contribute to curriculum development.</li>
+  </ul>
 
-<p>Before my doctoral studies, I spent many years on the front lines of public health in Iraq. As a Community Health Specialist and Public Health Officer, I led training programs for doctors and health workers in essential areas such as Antenatal Care (ANC) and Emergency Obstetric and Neonatal Care (EmONC). These experiences provided me with a deep understanding of the practical challenges in healthcare delivery and the importance of robust surveillance systems.</p>
+  <h3>Ph.D. Researcher — Universiti Sains Malaysia <span aria-label="from 2021 to 2025">(2021–2025)</span></h3>
+  <ul>
+    <li>Designed and conducted a cross-sectional study of community-based infectious disease surveillance in Malaysia.</li>
+    <li>Developed, adapted, and validated questionnaires for community leaders and representatives.</li>
+    <li>Produced peer-reviewed publications using advanced statistical and psychometric methods.</li>
+  </ul>
 
-<p>Currently, I serve as a Lecturer at the Higher Health Institute of Wasit, where I share my expertise with the next generation of health professionals. I teach undergraduate courses in emergency health, public health, and epidemiology, while also supervising student research. My academic work is complemented by a strong publication record, with numerous peer-reviewed articles focusing on community engagement and the determinants of infectious disease surveillance.</p>
+  <h3>Community Health Specialist and Public Health Officer — Wasit, Iraq <span aria-label="from 2010 to 2021">(2010–2021)</span></h3>
+  <p>Worked across communicable disease, maternal and child health, pharmacy, medical, antenatal, and postnatal care units. Delivered training for health workers and doctors in Antenatal Care, Integrated Management of Neonatal and Child Health, and Emergency Obstetric and Neonatal Care.</p>
+</section>
 
-<p>Beyond my primary research and teaching roles, I am a certified WHO e-instructor with a passion for capacity building. I am proficient in various statistical software, including R, Mplus, JAMOVI, and JASP, which I use to model complex disease dynamics and psychometric data. I am always looking for new opportunities to apply my skills in epidemiology and biostatistics to solve pressing public health problems.</p>
+<section class="about-page__section" aria-labelledby="skills-heading">
+  <h2 id="skills-heading">Technical Skills</h2>
+  <ul>
+    <li><strong>Research:</strong> Epidemiological study design, infectious disease surveillance, instrument development, adaptation, and validation.</li>
+    <li><strong>Statistics:</strong> Structural Equation Modelling, path analysis, CFA/EFA, Item Response Theory, and applied statistical analysis.</li>
+    <li><strong>Software:</strong> R, Mplus, JAMOVI, JASP, and SPSS.</li>
+    <li><strong>Training:</strong> WHO-certified e-instructor and certified Training of Trainers facilitator.</li>
+  </ul>
+</section>
 
-<p>On a personal note, I am committed to continuous learning and professional growth. I actively participate in international conferences and maintain an active presence in the global research community through platforms like LinkedIn, ORCID, and Google Scholar. If you would like to discuss my work or potential collaborations, please feel free to reach out via <a href="mailto:ahmed.azeez1987@gmail.com">email</a> or connect with me on <a href="https://www.linkedin.com/in/ahmed-a-hasan">LinkedIn</a>.</p>
-</div>
+<section class="about-page__section" aria-labelledby="education-heading">
+  <h2 id="education-heading">Education</h2>
+  <ul>
+    <li><strong>Ph.D. in Community Medicine and Public Health</strong>, Universiti Sains Malaysia, 2021–2025. Specialisation: Epidemiology of Infectious Diseases.</li>
+    <li><strong>Master's Degree in Community Health</strong>, Middle Technical University, Baghdad, Iraq, 2015–2018.</li>
+    <li><strong>Bachelor's Degree in Community Health</strong>, Middle Technical University, Baghdad, Iraq, 2006–2010.</li>
+  </ul>
+</section>
+
+<section class="about-page__section" aria-labelledby="publications-heading">
+  <h2 id="publications-heading">Selected Publications</h2>
+  <p>My doctoral research resulted in peer-reviewed articles and international conference presentations on community-based infectious disease surveillance, community participation, and public health instrument validation.</p>
+  <ul class="about-page__publication-list">
+    <li><strong>Modelling the determinants of community engagement in community-based surveillance of infectious diseases:</strong> Applying the Health Belief Model. <em>Journal of Public Health Research</em>, 2025.</li>
+    <li><strong>A confirmatory analysis of the knowledge, attitudes, and perceptions questionnaire for community-based surveillance of infectious diseases:</strong> A cross-sectional study in Malaysia. <em>Osong Public Health and Research Perspectives</em>, 2025.</li>
+    <li><strong>Community participation in community-based surveillance of infectious diseases:</strong> A structural equation modelling approach based on the Theory of Reasoned Action. <em>International Journal of One Health</em>, 2025.</li>
+    <li><strong>Assessing community leaders' knowledge, attitudes, and perceptions on community-based surveillance of infectious diseases:</strong> Development and validation of a questionnaire. <em>Medical Journal of Babylon</em>, 2025.</li>
+    <li><strong>Role of self-efficacy in mediating the effect between perceived barriers and benefits and intention to be involved in community-based surveillance of infectious diseases.</strong> Book chapter, 2026.</li>
+  </ul>
+  <p>For the complete publication list and current academic profile, please <a href="/cv/Ahmed_Azeez_Hasan_CV.pdf">view my CV</a> or connect with me through the profiles below.</p>
+</section>
+
+<section class="about-page__section about-page__contact" aria-labelledby="collaborations-heading">
+  <h2 id="collaborations-heading">Collaborations</h2>
+  <p>I welcome collaborations in infectious disease epidemiology, public health surveillance, biostatistics, psychometric validation, community health, research training, and evidence-informed health policy.</p>
+  <p>To discuss a research project, teaching opportunity, conference invitation, or public health initiative, contact me by <a href="mailto:ahmed.azeez1987@gmail.com">email</a> or connect with me on <a href="https://www.linkedin.com/in/ahmed-a-hasan" rel="noopener noreferrer">LinkedIn</a>.</p>
+</section>
