@@ -11,7 +11,6 @@ This repository follows the standard directory structure of a Hugo project. Belo
 | File | Description |
 |------|-------------|
 | `config.toml` | The main configuration file for the Hugo site. It defines global settings such as the base URL, site title, theme selection, author metadata, social media links, and syntax highlighting preferences. |
-| `netlify.toml` | Configuration file for Netlify deployment. It specifies the build command (`hugo`), the publish directory (`public`), and environment variables like the Hugo version to ensure consistent builds across different environments. |
 | `README.md` | This file. It provides an overview of the repository, its structure, and instructions for understanding the project layout. |
 | `index.html` | A redirect or placeholder file at the root level, often used for specific hosting setups or to redirect users to the generated public site. |
 
@@ -47,11 +46,11 @@ This directory at the root level is used to override theme layouts or define cus
 - **`shortcodes/`**: Contains custom Hugo shortcodes that can be used within markdown files to render complex HTML elements or embed external content easily.
 
 #### 5. `public/`
-This is the output directory where Hugo generates the final static website. **Note:** This directory is typically generated automatically during the build process (`hugo` command) and contains the compiled HTML, CSS, JS, and assets ready to be deployed to a web server or hosting platform like GitHub Pages or Netlify.
+This is the output directory where Hugo generates the final static website. **Note:** This directory is generated automatically during the build process (`hugo` command) and contains the compiled HTML, CSS, JavaScript, and assets ready for GitHub Pages.
 
 ## 🚀 Deployment
 
-This site is configured for seamless deployment. The presence of `netlify.toml` indicates it is optimized for Netlify, but it can also be easily hosted on GitHub Pages. 
+This site is deployed exclusively through GitHub Pages using the GitHub Actions workflow in `.github/workflows/hugo.yml`.
 
 To build the site locally, ensure you have [Hugo](https://gohugo.io/installation/) installed, navigate to the repository root, and run:
 ```bash
