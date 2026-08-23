@@ -22,6 +22,7 @@ let theme = sessionStorage['theme']
 // looking for any tags selected from the non-home-page
 let tag = sessionStorage['tag']
 
+console.log({theme})
 
 //////////////////////////////////////////////////
 ///////// Light vs. Dark Theme Code //////////////
@@ -73,7 +74,6 @@ function makeDark(load){
 
   // Switch aria label to be accurate
   if (!themeText) lightDarkToggle.setAttribute('aria-label', 'Enable Light Mode')
-  lightDarkToggle.setAttribute('aria-pressed', 'true')
 
   // switch to dark syntax highlighting
   syntaxLight.rel = 'stylesheet alternate'
@@ -115,7 +115,6 @@ function makeLight(load){
 
     // Switch aria label to be accurate
     if (!themeText) lightDarkToggle.setAttribute('aria-label', 'Enable Dark Mode')
-    lightDarkToggle.setAttribute('aria-pressed', 'false')
 
     // light syntax highlighting is default, so if this isn't the first load, change to light highlighting
     syntaxDark.rel = 'stylesheet alternate'

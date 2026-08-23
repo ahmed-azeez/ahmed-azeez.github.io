@@ -1,5 +1,5 @@
-languageCode = "en-us"
 baseURL = "https://ahmed-azeez.github.io/"
+languageCode = "en-us"
 title = "Ahmed Azeez | Portfolio"
 theme = "data-science"
 enableEmoji = true
@@ -26,7 +26,7 @@ preserveTaxonomyNames = true
   # Syntax highlighting options
   highlight = true
   highlightjsVersion = "9.15.6"
-  highlightjsCDN = "//cdn.jsdelivr.net/npm"
+  highlightjsCDN = "//cdnjs.cloudflare.com/ajax/libs"
   highlightjsLang = ["r", "yaml", "javascript", "python"]
   custom = true
   highlightjsThemeLight = ""

@@ -77,16 +77,7 @@ function renderGallery(certs) {
     const cardLink = document.createElement("div");
     cardLink.className = "cert-card__image-link";
     cardLink.style.cursor = "pointer";
-    cardLink.setAttribute("role", "button");
-    cardLink.setAttribute("tabindex", "0");
-    cardLink.setAttribute("aria-label", `View certificate: ${cert.title}`);
     cardLink.onclick = () => openCertModal(cert);
-    cardLink.onkeydown = (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openCertModal(cert);
-      }
-    };
 
     const overlay = document.createElement("div");
     overlay.className = "cert-card__pdf-overlay";
@@ -283,9 +274,6 @@ async function handleDelete(e) {
 function openCertModal(cert) {
   const modal = document.createElement("div");
   modal.className = "cert-modal";
-  modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-modal", "true");
-  modal.setAttribute("aria-label", `Certificate viewer: ${cert.title}`);
 
   const content = document.createElement("div");
   content.className = "cert-modal__content";
@@ -298,16 +286,7 @@ function openCertModal(cert) {
   };
 
   const handleEscape = (event) => {
-    if (event.key === "Escape") {
-      closeModal();
-      return;
-    }
-    if (event.key === "ArrowLeft" && previousBtn) {
-      previousBtn.click();
-    }
-    if (event.key === "ArrowRight" && nextBtn) {
-      nextBtn.click();
-    }
+    if (event.key === "Escape") closeModal();
   };
 
   const closeBtn = document.createElement("button");
@@ -319,8 +298,6 @@ function openCertModal(cert) {
   content.appendChild(closeBtn);
 
   const isPdf = cert.image_url.toLowerCase().endsWith('.pdf');
-  let previousBtn = null;
-  let nextBtn = null;
   if (isPdf) {
     const viewer = document.createElement("div");
     viewer.className = "cert-modal__viewer";
@@ -332,11 +309,10 @@ function openCertModal(cert) {
     const controls = document.createElement("div");
     controls.className = "cert-modal__controls";
 
-    previousBtn = document.createElement("button");
+    const previousBtn = document.createElement("button");
     previousBtn.type = "button";
     previousBtn.className = "cert-modal__page-button";
     previousBtn.textContent = "Previous";
-    previousBtn.setAttribute("aria-label", "Go to previous certificate page");
     previousBtn.disabled = true;
 
     const pageIndicator = document.createElement("span");
@@ -344,11 +320,10 @@ function openCertModal(cert) {
     pageIndicator.textContent = "Loading PDF…";
     pageIndicator.setAttribute("aria-live", "polite");
 
-    nextBtn = document.createElement("button");
+    const nextBtn = document.createElement("button");
     nextBtn.type = "button";
     nextBtn.className = "cert-modal__page-button";
     nextBtn.textContent = "Next";
-    nextBtn.setAttribute("aria-label", "Go to next certificate page");
     nextBtn.disabled = true;
 
     controls.appendChild(previousBtn);
@@ -406,7 +381,6 @@ function openCertModal(cert) {
   };
   document.body.appendChild(modal);
   document.addEventListener("keydown", handleEscape);
-  closeBtn.focus();
 }
 
 // Disable right-click and common shortcuts on the certificates section

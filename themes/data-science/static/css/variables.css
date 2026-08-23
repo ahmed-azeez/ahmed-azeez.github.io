@@ -14,7 +14,7 @@
   --radius: 5px;
 }
 body.light{
-  --accent: #1F679F; /* accessible blue */
+  --accent: #2B7EC1; /* bright blue */
   --content: #1A3A52; /* dark blue */
   --tertiary: #5B7C99; /* mid blue */
   --page: #E3F2FD; /* light blue */
