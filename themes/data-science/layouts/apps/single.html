@@ -68,7 +68,7 @@
 
     <section id="app-viewer-section" class="app-viewer-section" style="display: none;">
       <div class="app-container">
-        <iframe id="app-iframe" src="" frameborder="0" style="width: 100%; height: 90vh; border-radius: var(--radius);"></iframe>
+        <iframe id="app-iframe" src="" title="Interactive application" style="width: 100%; height: 90vh; border: 0;"></iframe>
       </div>
     </section>
 
@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const currentAppName = document.getElementById('current-app-name');
   const backBtn = document.getElementById('back-to-apps');
   const copyCurrentBtn = document.getElementById('copy-current-app-link');
+  const appsPage = document.querySelector('.apps-page');
 
   function openApp(appName, updateHash = true) {
     const card = document.querySelector(`.app-card[data-app-name="${appName}"]`);
@@ -102,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       appViewerSection.style.display = 'block';
       appBreadcrumb.style.display = 'flex';
+      appsPage.classList.add('apps-page--viewer');
       
       if (updateHash) {
         window.location.hash = appName;
@@ -114,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
     appIframe.src = '';
     appViewerSection.style.display = 'none';
     appBreadcrumb.style.display = 'none';
+    appsPage.classList.remove('apps-page--viewer');
     appsListSection.style.display = 'block';
     appHeaderTitle.style.display = 'block';
     

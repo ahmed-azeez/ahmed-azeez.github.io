@@ -1675,3 +1675,37 @@ footer{
     transform: translateX(-50%);
   }
 }
+
+/* Full-width Apps viewer: keep the top navigation, remove side margins from the open app */
+.apps-page {
+  overflow-x: hidden;
+}
+
+.apps-page--viewer .article--apps {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 0;
+}
+
+.apps-page--viewer .article--apps .app-viewer-section {
+  width: 100%;
+  margin-top: 0;
+}
+
+.apps-page--viewer .article--apps .app-container {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.apps-page--viewer .article--apps #app-iframe {
+  width: 100%;
+  min-height: calc(100vh - 50px);
+  height: calc(100vh - 50px) !important;
+  border-radius: 0;
+}
