@@ -319,3 +319,68 @@ function filterByTag(){
 }
 
 if (pageTag) handleSinglePageTag()
+
+// Explore menu behavior
+const exploreToggle = document.querySelector('.explore-toggle')
+const exploreMenu = document.getElementById('explore-menu')
+const exploreLinks = exploreMenu ? Array.from(exploreMenu.querySelectorAll('a')) : []
+
+function setExploreMenu(open, focusIndex = null) {
+  if (!exploreToggle || !exploreMenu) return
+
+  exploreMenu.hidden = !open
+  exploreToggle.setAttribute('aria-expanded', String(open))
+  exploreToggle.setAttribute('aria-label', open ? 'Close Explore menu' : 'Open Explore menu')
+
+  if (open && focusIndex !== null && exploreLinks.length > 0) {
+    const safeIndex = Math.max(0, Math.min(focusIndex, exploreLinks.length - 1))
+    exploreLinks[safeIndex].focus()
+  }
+}
+
+if (exploreToggle && exploreMenu) {
+  exploreToggle.addEventListener('click', () => {
+    setExploreMenu(exploreMenu.hidden)
+  })
+
+  exploreToggle.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setExploreMenu(true, 0)
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setExploreMenu(true, exploreLinks.length - 1)
+    } else if (event.key === 'Escape') {
+      event.preventDefault()
+      setExploreMenu(false)
+    }
+  })
+
+  exploreMenu.addEventListener('keydown', (event) => {
+    const currentIndex = exploreLinks.indexOf(document.activeElement)
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setExploreMenu(true, (currentIndex + 1) % exploreLinks.length)
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setExploreMenu(true, (currentIndex - 1 + exploreLinks.length) % exploreLinks.length)
+    } else if (event.key === 'Home') {
+      event.preventDefault()
+      setExploreMenu(true, 0)
+    } else if (event.key === 'End') {
+      event.preventDefault()
+      setExploreMenu(true, exploreLinks.length - 1)
+    } else if (event.key === 'Escape') {
+      event.preventDefault()
+      setExploreMenu(false)
+      exploreToggle.focus()
+    }
+  })
+
+  document.addEventListener('click', (event) => {
+    if (!exploreMenu.hidden && !exploreMenu.contains(event.target) && !exploreToggle.contains(event.target)) {
+      setExploreMenu(false)
+    }
+  })
+}

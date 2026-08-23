@@ -30,22 +30,16 @@
       </div>
 
       <div class="filters-nav">
-        <div class="filters-about">
-          <a class="filters-click" href="/about/" aria-label="About Me">
-            <p class='tags-meta'>About Me</p>
-          </a>
-        </div>
-
-        <div class="filters-certs">
-          <a class="filters-click" href="/certs/" aria-label="My Certs">
-            <p class='tags-meta'>My Certs</p>
-          </a>
-        </div>
-
-        <div class="filters-apps">
-          <a class="filters-click" href="/apps/" aria-label="My Apps">
-            <p class='tags-meta'>My Apps</p>
-          </a>
+        <div class="filters-explore">
+          <button type="button" class="filters-click explore-toggle" aria-label="Open Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="explore-menu">
+            <p class='tags-meta'>Explore</p>
+            {{ partial "icon.html" "chevron-down" }}
+          </button>
+          <div id="explore-menu" class="explore-menu" hidden>
+            <a href="/about/" aria-label="About Me">About Me</a>
+            <a href="/certs/" aria-label="My Certificates">My Certificates</a>
+            <a href="/apps/" aria-label="My Apps">My Apps</a>
+          </div>
         </div>
 
         <button class="theme-toggle" aria-label="Enable Dark Mode">
