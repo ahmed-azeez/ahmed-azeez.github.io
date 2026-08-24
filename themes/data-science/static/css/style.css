@@ -1709,3 +1709,146 @@ footer{
   height: calc(100vh - 50px) !important;
   border-radius: 0;
 }
+
+/* Mobile layout refinements */
+@media (max-width: 600px) {
+  .banner {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .intro {
+    min-height: 0;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .intro-container,
+  .intro-content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .introImage {
+    width: min(100%, 280px);
+    max-width: 280px;
+    height: auto;
+    margin-bottom: 1.25rem;
+  }
+
+  .name {
+    font-size: clamp(28px, 8vw, 36px);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .small-title {
+    font-size: 22px;
+    padding-left: 0;
+    transform: none;
+    text-align: center;
+  }
+
+  .intro-sub {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  .portfolio__filters {
+    height: auto;
+    min-height: 50px;
+  }
+
+  .filters__content {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0 0.35rem;
+  }
+
+  .filters-tags {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .filters-nav {
+    flex-shrink: 0;
+  }
+
+  .filters-click,
+  .theme-toggle {
+    min-height: 40px;
+  }
+
+  .tags-meta {
+    font-size: 14px;
+  }
+
+  .article {
+    width: calc(100% - 1rem);
+    max-width: none;
+    margin: 0 0.5rem 80px;
+    top: 55px;
+    padding: 28px 18px;
+    border-radius: var(--radius);
+  }
+
+  .post__title {
+    font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.1;
+  }
+
+  .tldr {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tldr-text {
+    flex: 1 1 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .headerImg {
+    margin: 1rem auto 0;
+    transform: scale(0.86);
+  }
+
+  .certs-gallery,
+  .apps-gallery {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .app-card {
+    padding: 22px 16px;
+  }
+
+  .apps-intro {
+    margin-bottom: 1.25rem;
+  }
+
+  .app-breadcrumb {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .apps-page--viewer .article--apps {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+  }
+
+  .apps-page--viewer .article--apps #app-iframe {
+    min-height: calc(100vh - 55px);
+    height: calc(100vh - 55px) !important;
+  }
+
+  .footer__single {
+    position: static;
+  }
+}
