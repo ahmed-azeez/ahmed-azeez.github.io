@@ -1,0 +1,116 @@
+---
+title: "Estimation Explained: How We Guess Population Values from a Sample"
+authors:
+  - Ahmed Azeez
+date: '2026-09-04'
+slug: estimation-explained
+categories:
+  - post
+tags:
+  - statistics
+  - inference
+  - research methods
+description: 'Estimation is how researchers use a small sample to make educated guesses about an entire population. This guide explains point estimates, confidence intervals, and how to calculate them.'
+thumbnail: 'thumbnail.png'
+image: '1.png'
+imageAlt: 'Illustration of a small sample group used to represent and estimate a larger population'
+imageCredit: 'AI'
+imageCreditLink: ''
+disqus: 'true'
+---
+
+<p><strong>Estimation</strong> is one of the two main tools of statistical inference — the process of drawing conclusions about a population based on data collected from a sample. Instead of measuring every single person or item in a population, researchers study a smaller group and use that data to make an educated guess about the whole.</p>
+
+<p><img src="1.png" alt="Illustration of a small sample group used to represent and estimate a larger population" /></p>
+
+<hr />
+
+<div id="the-problem" class="section level2">
+<h2>The Problem: We Can't Measure Everyone</h2>
+<p>Imagine trying to find the <strong>average blood pressure</strong> of an entire country's population. Measuring every single person is impossible, so instead we measure a sample — say, 30 patients — and use that sample to <strong>estimate</strong> the true population value.</p>
+<p>This is the core idea of inference: we move from a <strong>statistic</strong> (calculated from the sample) to a <strong>parameter</strong> (the true, usually unknown, value in the population).</p>
+</div>
+
+<hr />
+
+<div id="point-vs-interval" class="section level2">
+<h2>Point Estimation vs. Interval Estimation</h2>
+<p>There are two ways to present an estimate:</p>
+<ul>
+  <li><strong>Point estimate:</strong> a single number, such as a mean or a percentage. For example, "average SBP = 120 mmHg."</li>
+  <li><strong>Interval estimate:</strong> a range of values, known as a <strong>confidence interval</strong>, that is likely to contain the true population value. For example, "average SBP = 120 mmHg (95% CI: 115, 125 mmHg)."</li>
+</ul>
+<p>A point estimate alone doesn't tell you how much uncertainty surrounds it. A confidence interval does — it communicates both the best guess and the precision of that guess.</p>
+<p><img src="2.png" alt="Number line showing a point estimate with a confidence interval range around it" /></p>
+</div>
+
+<hr />
+
+<div id="notation" class="section level2">
+<h2>Parameters vs. Estimates</h2>
+<p>A quick note on notation, since it appears throughout the calculations below:</p>
+<ul>
+  <li><strong>Parameter (θ or μ):</strong> the true, fixed value in the population — almost always unknown.</li>
+  <li><strong>Estimate (θ̂ or x̄):</strong> the value calculated from the sample, used to approximate the parameter.</li>
+</ul>
+</div>
+
+<hr />
+
+<div id="general-formula" class="section level2">
+<h2>The General Formula for a Confidence Interval</h2>
+<p>Nearly every confidence interval follows the same basic structure:</p>
+<p><strong>Point Estimate ± (Reliability Coefficient × Standard Error)</strong></p>
+<p>The <strong>reliability coefficient</strong> depends on how confident you want to be, and comes from the standard normal (z) distribution:</p>
+<table>
+  <thead>
+    <tr><th>Confidence Level</th><th>Reliability Coefficient (z)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>90%</td><td>1.65</td></tr>
+    <tr><td>95%</td><td>1.96</td></tr>
+    <tr><td>99%</td><td>2.58</td></tr>
+  </tbody>
+</table>
+<p>A higher confidence level requires a larger coefficient, which produces a <strong>wider</strong> interval — more certainty comes at the cost of precision.</p>
+<p><img src="3.png" alt="Bell curve showing the middle 95 percent shaded to represent a confidence level" /></p>
+<p><img src="4.png" alt="Scale or gauge comparing 90 percent, 95 percent, and 99 percent confidence levels with increasing interval width" /></p>
+</div>
+
+<hr />
+
+<div id="estimating-a-mean" class="section level2">
+<h2>Example: Estimating a Population Mean</h2>
+<p>Suppose systolic blood pressure (SBP) was measured in 30 patients, giving a mean of 120 mmHg and a standard deviation of 15 mmHg. To estimate the population mean with 95% confidence:</p>
+<pre>
+120 ± 1.96 × (15 / √30)
+120 ± 1.96 × 2.739
+95% CI: 114.6, 125.4
+</pre>
+<p><strong>Interpretation:</strong> we are 95% confident that the true population mean SBP lies between 114.6 and 125.4 mmHg.</p>
+<p><img src="5.png" alt="Blood pressure monitor illustration with a confidence interval range shown beneath it" /></p>
+</div>
+
+<hr />
+
+<div id="estimating-a-proportion" class="section level2">
+<h2>Example: Estimating a Population Proportion</h2>
+<p>Estimation also applies to proportions or percentages — for example, the proportion of a population with a disease. In a study of drug users, 130 out of 200 tested HIV positive. To estimate the population proportion with 99% confidence:</p>
+<pre>
+p̂ = 130/200 = 0.65
+0.65 ± 2.58 × √(0.65 × 0.35 / 200)
+99% CI: 0.5623, 0.7377
+</pre>
+<p><strong>Interpretation:</strong> we are 99% confident that the true population percentage of HIV-positive individuals is between 56.23% and 73.77%.</p>
+<p><em>Note:</em> the normal approximation for proportions only works well when both <strong>np</strong> and <strong>n(1-p)</strong> are greater than 5.</p>
+<p><img src="6.png" alt="Percentage bar chart with a shaded confidence interval range around the estimated proportion" /></p>
+</div>
+
+<hr />
+
+<div id="the-bottom-line" class="section level2">
+<h2>💡 The Bottom Line</h2>
+<p>A single number is rarely the whole story. Whenever you report a mean or a proportion from a sample, pair it with a <strong>confidence interval</strong> so readers know not just your best guess, but how much uncertainty surrounds it.</p>
+<p><img src="7.png" alt="Icon combining a target with a bullseye and a range bracket, symbolizing a precise estimate paired with its confidence interval" /></p>
+<p><em>Report your point estimate. Compute your confidence interval. Interpret with care.</em></p>
+</div>
