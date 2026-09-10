@@ -1,0 +1,155 @@
+---
+title: "Hypothesis Testing Explained: How Statisticians Decide What's Real"
+authors:
+  - Ahmed Azeez
+date: '2026-09-10'
+slug: hypothesis-testing-explained
+categories:
+  - post
+tags:
+  - basic statistics
+  - hypothesis testing
+description: 'Hypothesis testing is how researchers use sample data to decide whether an effect or difference is real, or just due to chance. This guide explains the key ideas in plain language, with a worked example.'
+thumbnail: 'thumbnail.png'
+image: '1.png'
+imageAlt: 'Illustration of a sample being used to draw a conclusion about a population'
+imageCredit: 'AI'
+imageCreditLink: ''
+disqus: 'true'
+---
+
+<p><strong>Hypothesis testing</strong> is the other major tool of statistical inference (alongside estimation). Instead of just estimating a value, it helps answer a yes-or-no question: <em>is there really a difference or effect, or could what we observed have happened just by chance?</em></p>
+
+<p><img src="1.png" alt="Illustration of a sample being used to draw a conclusion about a population" /></p>
+
+<hr />
+
+<div id="the-idea" class="section level2">
+<h2>The Basic Idea</h2>
+<p>Say a researcher believes the average systolic blood pressure (SBP) in a population is different from 120 mmHg. It's impossible to measure everyone, so a sample is taken instead. Hypothesis testing gives a structured way to use that sample to make a decision about the whole population — while being upfront about the risk of getting it wrong.</p>
+</div>
+
+<hr />
+
+<div id="two-hypotheses" class="section level2">
+<h2>Two Competing Hypotheses</h2>
+<p>Every hypothesis test starts with two opposing statements:</p>
+<ul>
+  <li><strong>Null hypothesis (H0):</strong> there is no difference or no effect. This is the "default" assumption we test against.</li>
+  <li><strong>Alternative hypothesis (HA):</strong> there is a difference or effect. This usually reflects what the researcher actually suspects.</li>
+</ul>
+<p>The test never <em>proves</em> either hypothesis is true. It simply decides whether the sample data provides enough evidence to reject H0 in favour of HA.</p>
+<p>Depending on what the researcher wants to test, HA can be written in three ways:</p>
+<ul>
+  <li><strong>Two-tailed (difference):</strong> "SBP is not 120 mmHg" → H0: μ = 120, HA: μ ≠ 120</li>
+  <li><strong>One-tailed (more):</strong> "SBP is more than 120 mmHg" → H0: μ ≤ 120, HA: μ > 120</li>
+  <li><strong>One-tailed (less):</strong> "SBP is less than 120 mmHg" → H0: μ ≥ 120, HA: μ < 120</li>
+</ul>
+</div>
+
+<hr />
+
+<div id="test-statistic" class="section level2">
+<h2>The Test Statistic</h2>
+<p>To make a decision, the sample data is converted into a single number called the <strong>test statistic</strong>, using a general formula:</p>
+<p><strong>Test statistic = (sample statistic − hypothesized value) / (standard error of the sample statistic)</strong></p>
+<p>This number is then compared against a cut-off value, or converted into a probability called the <strong>P-value</strong>, to make a decision.</p>
+</div>
+
+<hr />
+
+<div id="significance-and-pvalue" class="section level2">
+<h2>Significance Level and P-value</h2>
+<ul>
+  <li><strong>Significance level (α):</strong> the risk we're willing to accept of rejecting H0 when it's actually true. Commonly set at 0.05 (5%), sometimes 0.01 or 0.001.</li>
+  <li><strong>P-value:</strong> the probability of getting a test result as extreme as the one observed, if H0 were actually true.</li>
+</ul>
+<p>The decision rule is simple:</p>
+<ul>
+  <li>If <strong>P-value < α</strong> → the result is <strong>statistically significant</strong>: reject H0, accept HA.</li>
+  <li>If <strong>P-value ≥ α</strong> → the result is <strong>not significant</strong>: we do not reject H0.</li>
+</ul>
+<p>This connects directly to confidence intervals: values inside the confidence interval fall in the "acceptance region" (H0 not rejected), while values outside it fall in the "rejection region" (H0 rejected).</p>
+</div>
+
+<hr />
+
+<div id="errors" class="section level2">
+<h2>Two Ways to Get It Wrong</h2>
+<p>Because a decision is made from a sample rather than the whole population, there's always some chance of error. There are two possible mistakes:</p>
+<table>
+  <thead>
+    <tr><th></th><th>HA is actually True</th><th>H0 is actually True</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Test says significant</strong></td><td>True Positive (Power, 1 − β)</td><td>False Positive (Type I Error, α)</td></tr>
+    <tr><td><strong>Test says not significant</strong></td><td>False Negative (Type II Error, β)</td><td>True Negative (Specificity, 1 − α)</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><strong>Type I error (α):</strong> concluding there's an effect when there really isn't one. Usually kept at 0.05, 0.01, or 0.001.</li>
+  <li><strong>Type II error (β):</strong> missing a real effect. Usually kept at 0.2 or 0.1.</li>
+  <li><strong>Power (1 − β):</strong> the ability of a test to correctly detect a real effect. Usually aimed at 0.8 or 0.9.</li>
+</ul>
+<p>The illustration below shows how the H0 and HA distributions overlap — this overlap is exactly where these errors come from.</p>
+<p><img src="2.png" alt="Overlapping normal distributions for H0 and HA showing the alpha, beta, and power regions" /></p>
+</div>
+
+<hr />
+
+<div id="steps" class="section level2">
+<h2>The 8 Steps of Hypothesis Testing</h2>
+<p>Every hypothesis test follows the same general roadmap:</p>
+<ol>
+  <li><strong>Data description</strong> — is the data numerical or categorical? Report the sample size, mean, and standard deviation.</li>
+  <li><strong>Assumptions</strong> — is the data normally distributed? Is the sample random? Are the samples independent or paired? Is the population variance known?</li>
+  <li><strong>Hypothesis statements</strong> — write out H0 and HA.</li>
+  <li><strong>Test statistic used</strong> — choose the correct formula (e.g., z or t) based on the data and assumptions.</li>
+  <li><strong>Decision rule</strong> — set α (usually 0.05), and define the rejection/acceptance region for a one- or two-tailed test.</li>
+  <li><strong>Calculation of test statistic</strong> — plug in the numbers.</li>
+  <li><strong>Statistical decision</strong> — reject or do not reject H0, based on the P-value or test statistic, compared to α.</li>
+  <li><strong>Conclusion</strong> — state the result in plain language, in relation to the original research question.</li>
+</ol>
+</div>
+
+<hr />
+
+<div id="example" class="section level2">
+<h2>Worked Example: Testing a Population Mean</h2>
+<p>A sample of 30 adults was studied to test whether the population's mean SBP is 120 mmHg. The sample gave a mean of 125 mmHg and a standard deviation of 15 mmHg (treated as the population value).</p>
+<p><strong>Hypotheses (two-tailed):</strong> H0: μ = 120, HA: μ ≠ 120</p>
+<p><strong>Test statistic:</strong></p>
+<pre>
+z = (x̄ − μ0) / (σ/√n)
+z = (125 − 120) / (15/√30)
+z = 1.826
+</pre>
+<p><strong>Using the P-value approach:</strong></p>
+<pre>
+P(Z > 1.826) = 1 − 0.966 = 0.034
+Two-tailed P-value = 0.034 × 2 = 0.068
+</pre>
+<p>Since 0.068 > 0.05, we <strong>do not reject H0</strong>.</p>
+<p><strong>Using the critical value approach:</strong> at α = 0.05 (two-tailed), the critical z-values are −1.96 and 1.96. Since 1.826 falls within this range, we again <strong>do not reject H0</strong>.</p>
+<p><strong>Conclusion:</strong> there is not enough evidence to conclude that the population mean SBP differs from 120 mmHg.</p>
+<p>The same data can also be tested as a one-tailed hypothesis. For HA: μ > 120, the P-value is 0.034 (< 0.05), so H0 <strong>is rejected</strong> — there is evidence the mean SBP is greater than 120 mmHg. This shows that the same data can lead to a different decision depending on how the hypothesis is framed, which is why the hypothesis must be decided <em>before</em> looking at the result.</p>
+</div>
+
+<hr />
+
+<div id="proportions" class="section level2">
+<h2>Testing a Proportion</h2>
+<p>The same logic applies when testing a proportion or percentage instead of a mean — for example, whether the proportion of diabetics in a population is 0.3. The test statistic formula changes slightly:</p>
+<pre>
+z = (p̂ − p) / √(p(1 − p) / n)
+</pre>
+<p>Everything else — the hypotheses, the decision rule, comparing the P-value to α — works exactly the same way.</p>
+</div>
+
+<hr />
+
+<div id="the-bottom-line" class="section level2">
+<h2>💡 The Bottom Line</h2>
+<p>Hypothesis testing doesn't tell you the truth — it tells you whether your data provides strong enough evidence to doubt the "no difference" assumption. Always decide your hypothesis and significance level before collecting or analyzing your data, and remember: a "not significant" result doesn't prove H0 is true — it just means there wasn't enough evidence to reject it.</p>
+<p><em>State your hypotheses first. Set your significance level. Let the data decide.</em></p>
+</div>
